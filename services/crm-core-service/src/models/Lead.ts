@@ -20,6 +20,7 @@ export class Lead extends Model {
                 last_name: { type: DataTypes.STRING, allowNull: false },
                 email: { type: DataTypes.STRING, allowNull: false },
                 status_id: { type: DataTypes.STRING, allowNull: false, defaultValue: 'NEW' },
+                custom_fields: { type: DataTypes.JSON, allowNull: true },
             },
             {
                 sequelize,

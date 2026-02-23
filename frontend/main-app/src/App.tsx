@@ -22,6 +22,7 @@ import LeadList from './pages/crm/LeadList';
 import LeadProfile from './pages/crm/LeadProfile';
 import UnifiedInbox from './pages/crm/UnifiedInbox';
 import PipelineBoard from './pages/crm/PipelineBoard';
+import { LeadPipelineBoard } from './pages/crm/LeadPipelineBoard';
 import TicketCenter from './pages/crm/TicketCenter';
 import AuditLogView from './pages/crm/AuditLogView';
 import StaffManagement from './pages/crm/StaffManagement';
@@ -99,6 +100,7 @@ export default function App() {
             <Route path="leads/:id" element={<LeadProfile />} />
             <Route path="inbox" element={<UnifiedInbox />} />
             <Route path="pipeline" element={<PipelineBoard />} />
+            <Route path="leads-pipeline" element={<LeadPipelineBoard />} />
             <Route path="tickets" element={<TicketCenter />} />
             <Route path="audit-logs" element={<AuditLogView />} />
             <Route path="staff" element={<StaffManagement />} />

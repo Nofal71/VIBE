@@ -11,9 +11,9 @@ export const Sidebar: React.FC = () => {
   const borderColor = isLight ? 'border-gray-200' : 'border-gray-700';
   const headingColor = isLight ? 'text-gray-500' : 'text-gray-400';
 
-  
-  
-  
+
+
+
 
   const tables = schemaJson.tables || [];
   const industryModules = tables.map((t: any) => ({ name: t.name, url: `/crm/modules/${t.name}` }));
@@ -40,8 +40,9 @@ export const Sidebar: React.FC = () => {
           <ul className="space-y-1">
             <NavItem to="/crm" end label="Dashboard" uiConfig={uiConfig} isLight={isLight} />
             <NavItem to="/crm/leads" label="Leads" uiConfig={uiConfig} isLight={isLight} />
+            <NavItem to="/crm/leads-pipeline" label="Leads Pipeline" uiConfig={uiConfig} isLight={isLight} />
             <NavItem to="/crm/inbox" label="Unified Inbox" uiConfig={uiConfig} isLight={isLight} />
-            <NavItem to="/crm/pipeline" label="Sales Pipeline" uiConfig={uiConfig} isLight={isLight} />
+            <NavItem to="/crm/pipeline" label="Deal Pipeline" uiConfig={uiConfig} isLight={isLight} />
             <NavItem to="/crm/tasks" label="Task Manager" uiConfig={uiConfig} isLight={isLight} />
             <NavItem to="/crm/calendar" label="Calendar" uiConfig={uiConfig} isLight={isLight} />
             <NavItem to="/crm/accounts" label="B2B Accounts" uiConfig={uiConfig} isLight={isLight} />
