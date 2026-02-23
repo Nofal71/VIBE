@@ -4,7 +4,7 @@ import { DepartmentBlueprint } from '../models';
 export class BlueprintController {
     static async createBlueprint(req: Request, res: Response): Promise<void> {
         try {
-            const { name, schema_json, default_roles_json } = req.body;
+            const { name, schema_json, default_roles_json, ui_config_json, default_stages_json } = req.body;
 
             if (!name || !schema_json) {
                 res.status(400).json({ error: 'Missing name or schema_json definitions in request constraints.' });
@@ -15,6 +15,8 @@ export class BlueprintController {
                 name,
                 schema_json,
                 default_roles_json: default_roles_json || { roles: ['Admin'] },
+                ui_config_json: ui_config_json || {},
+                default_stages_json: default_stages_json || []
             });
 
             res.status(201).json({
