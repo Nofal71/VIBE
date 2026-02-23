@@ -1,0 +1,231 @@
+# Caddyfile — IHSolution.tech SaaS CRM Reverse Proxy
+#
+# ROUTING DESIGN:
+#   Caddy strips only "/api" — services receive the path WITHOUT "/api".
+#   Example: POST /api/auth/login  →  POST /auth/login  at iam-service:4004
+#   Example: GET  /api/provision   →  GET  /provision   at super-admin-service:4000
+#
+# CORS FIX:
+#   Microservices have 'cors()' middleware injecting '*'. 
+#   We use a snippet (proxy_cors) to delete those upstream headers.
+#   Then Caddy injects the authoritative dynamic headers ({http.request.header.Origin}).
+
+{
+    email admin@ihsolution.tech
+    local_certs
+}
+
+# ── Snippet to strip backend CORS headers ─────────────────────────────────────
+(proxy_cors) {
+    header_down -Access-Control-Allow-Origin
+    header_down -Access-Control-Allow-Methods
+    header_down -Access-Control-Allow-Headers
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  LOCAL — http://localhost and http://*.localhost
+# ═══════════════════════════════════════════════════════════════════════════════
+
+http://localhost, http://*.localhost {
+
+    route {
+
+        # ── 1. CORS Preflight ───────────────────────────────────────────────
+        @preflight {
+            method OPTIONS
+            path /api/*
+        }
+        handle @preflight {
+            header Access-Control-Allow-Origin  "{http.request.header.Origin}"
+            header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+            header Access-Control-Allow-Headers "Authorization, Content-Type, x-tenant-id"
+            header Access-Control-Max-Age       "86400"
+            header Vary "Origin"
+            respond "" 204
+        }
+
+        # ── 2. CORS headers on all API responses ────────────────────────────
+        @api {
+            path /api/*
+            not method OPTIONS
+        }
+        header @api Access-Control-Allow-Origin  "{http.request.header.Origin}"
+        header @api Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+        header @api Access-Control-Allow-Headers "Authorization, Content-Type, x-tenant-id"
+        header @api Vary "Origin"
+
+        # ── 3. Route to microservices ───────────────────────────────────────
+        @iam {
+            path /api/auth*
+            path /api/roles*
+            path /api/permissions*
+            path /api/users*
+            path /api/field-locks*
+        }
+        handle @iam {
+            uri strip_prefix /api
+            reverse_proxy iam-service:4004 {
+                import proxy_cors
+            }
+        }
+
+        @superadmin {
+            path /api/provision*
+            path /api/blueprints*
+            path /api/ai*
+            path /api/companies*
+            path /api/broadcasts*
+            path /api/tenant/config*
+        }
+        handle @superadmin {
+            uri strip_prefix /api
+            reverse_proxy super-admin:4000 {
+                import proxy_cors
+            }
+        }
+
+        @files {
+            path /api/files*
+            path /api/upload*
+        }
+        handle @files {
+            uri strip_prefix /api
+            reverse_proxy file-service:4002 {
+                import proxy_cors
+            }
+        }
+
+        handle /api/inbox* {
+            uri strip_prefix /api
+            reverse_proxy email-service:4003 {
+                import proxy_cors
+            }
+        }
+
+        handle /api/tickets* {
+            uri strip_prefix /api
+            reverse_proxy ticket-service:4005 {
+                import proxy_cors
+            }
+        }
+
+        handle /api/* {
+            uri strip_prefix /api
+            reverse_proxy crm-core-service:4001 {
+                import proxy_cors
+            }
+        }
+
+        # ── 4. Frontend SPA ─────────────────────────────────────────────────
+        @main_host host localhost
+        handle @main_host {
+            reverse_proxy main-frontend:3000
+        }
+        handle {
+            reverse_proxy main-frontend:3000
+        }
+    }
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  PRODUCTION — https://ihsolution.tech, https://*.ihsolution.tech
+# ═══════════════════════════════════════════════════════════════════════════════
+
+ihsolution.tech, *.ihsolution.tech {
+
+    route {
+
+        # ── 1. CORS Preflight ───────────────────────────────────────────────
+        @preflight {
+            method OPTIONS
+            path /api/*
+        }
+        handle @preflight {
+            header Access-Control-Allow-Origin  "*"
+            header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+            header Access-Control-Allow-Headers "Authorization, Content-Type, x-tenant-id"
+            header Access-Control-Max-Age       "86400"
+            respond "" 204
+        }
+
+        # ── 2. CORS on all API responses ────────────────────────────────────
+        @api {
+            path /api/*
+            not method OPTIONS
+        }
+        header @api Access-Control-Allow-Origin  "*"
+        header @api Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+        header @api Access-Control-Allow-Headers "Authorization, Content-Type, x-tenant-id"
+
+        # ── 3. Microservices ────────────────────────────────────────────────
+        @iam {
+            path /api/auth*
+            path /api/roles*
+            path /api/permissions*
+            path /api/users*
+            path /api/field-locks*
+        }
+        handle @iam {
+            uri strip_prefix /api
+            reverse_proxy iam-service:4004 {
+                import proxy_cors
+            }
+        }
+
+        @superadmin {
+            path /api/provision*
+            path /api/blueprints*
+            path /api/ai*
+            path /api/companies*
+            path /api/broadcasts*
+            path /api/tenant/config*
+        }
+        handle @superadmin {
+            uri strip_prefix /api
+            reverse_proxy super-admin:4000 {
+                import proxy_cors
+            }
+        }
+
+        @files {
+            path /api/files*
+            path /api/upload*
+        }
+        handle @files {
+            uri strip_prefix /api
+            reverse_proxy file-service:4002 {
+                import proxy_cors
+            }
+        }
+
+        handle /api/inbox* {
+            uri strip_prefix /api
+            reverse_proxy email-service:4003 {
+                import proxy_cors
+            }
+        }
+
+        handle /api/tickets* {
+            uri strip_prefix /api
+            reverse_proxy ticket-service:4005 {
+                import proxy_cors
+            }
+        }
+
+        handle /api/* {
+            uri strip_prefix /api
+            reverse_proxy crm-core-service:4001 {
+                import proxy_cors
+            }
+        }
+
+        # ── 4. Frontend SPA ─────────────────────────────────────────────────
+        @main_host host ihsolution.tech www.ihsolution.tech
+        handle @main_host {
+            reverse_proxy main-frontend:3000
+        }
+        handle {
+            reverse_proxy main-frontend:3000
+        }
+    }
+}

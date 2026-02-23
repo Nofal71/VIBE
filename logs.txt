@@ -1,0 +1,38 @@
+Successfully connected to the saas_master_db.
+Master database synced successfully.
+Checking database seed status...
+Database already seeded. Skipping initialization.
+Super Admin Service running on port 4000
+Database tenant_858038728b8e4d0f96cd0092242e24ab created and access granted to admin.
+Table properties created in tenant_858038728b8e4d0f96cd0092242e24ab.
+(sequelize) Warning: Model "Company" is declaring public class fields for attribute(s): "id", "name", "plan_id", "department_id", "db_name", "db_user", "db_password", "status", "createdAt", "updatedAt".
+Added constraint to properties on lead_id
+[TenantSeeder] Generating internal baseline structures executing securely into DB: tenant_858038728b8e4d0f96cd0092242e24ab
+[TenantSeeder] SuperAdmin injected user: admin@tenant.local gracefully mapped into tenant_858038728b8e4d0f96cd0092242e24ab
+These class fields are shadowing Sequelize's attribute getters & setters.
+See https://sequelize.org/main/manual/model-basics.html#caveat-with-public-class-fields
+Provisioning error: ValidationError [SequelizeValidationError]: notNull Violation: Domain.company_id cannot be null
+    at InstanceValidator._validate (/usr/src/app/node_modules/sequelize/lib/instance-validator.js:50:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async InstanceValidator._validateAndRunHooks (/usr/src/app/node_modules/sequelize/lib/instance-validator.js:60:7)
+    at async InstanceValidator.validate (/usr/src/app/node_modules/sequelize/lib/instance-validator.js:54:12)
+    at async Domain.save (/usr/src/app/node_modules/sequelize/lib/model.js:2426:7)
+    at async Domain.create (/usr/src/app/node_modules/sequelize/lib/model.js:1362:12)
+    at async createCompany (/usr/src/app/dist/controllers/ProvisioningController.js:33:13) {
+  errors: [
+    ValidationErrorItem {
+      message: 'Domain.company_id cannot be null',
+      type: 'notNull Violation',
+      path: 'company_id',
+      value: null,
+      origin: 'CORE',
+      instance: [Domain],
+      validatorKey: 'is_null',
+      validatorName: null,
+      validatorArgs: []
+    }
+  ]
+}
+(sequelize) Warning: Model "Domain" is declaring public class fields for attribute(s): "id", "company_id", "domain_name", "is_verified", "createdAt", "updatedAt".
+These class fields are shadowing Sequelize's attribute getters & setters.
+See https://sequelize.org/main/manual/model-basics.html#caveat-with-public-class-fields

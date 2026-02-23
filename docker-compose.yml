@@ -1,0 +1,210 @@
+version: '3.8'
+
+services:
+  mysql-master:
+    image: mysql:8
+    container_name: mysql-master
+    restart: always
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: saas_master_db
+      MYSQL_USER: ${MYSQL_USER:-admin}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-admin}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "3307:3306"
+    networks:
+      - crm_network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  redis-broker:
+    image: redis:7-alpine
+    container_name: redis-broker
+    restart: always
+    env_file: .env
+    networks:
+      - crm_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  super-admin:
+    build:
+      context: ./services/super-admin
+      dockerfile: Dockerfile
+    container_name: super-admin
+    restart: always
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+    networks:
+      - crm_network
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./data/tenants:/usr/data/tenants
+      - ./deployments:/usr/deployments
+    depends_on:
+      mysql-master:
+        condition: service_healthy
+      redis-broker:
+        condition: service_healthy
+
+  iam-service:
+    build:
+      context: ./services/iam-service
+      dockerfile: Dockerfile
+    container_name: iam-service
+    restart: always
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 4004
+    ports:
+      - "4004:4004"
+    networks:
+      - crm_network
+    depends_on:
+      mysql-master:
+        condition: service_healthy
+
+  automations-service:
+    build:
+      context: ./services/automations-service
+      dockerfile: Dockerfile
+    container_name: automations-service
+    env_file: .env
+    environment:
+      NODE_ENV: production
+    networks:
+      - crm_network
+    depends_on:
+      redis-broker:
+        condition: service_healthy
+
+  crm-core-service:
+    build:
+      context: ./services/crm-core-service
+      dockerfile: Dockerfile
+    container_name: crm-core-service
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 4001
+    networks:
+      - crm_network
+    ports:
+      - "4001:4001"
+    depends_on:
+      mysql-master:
+        condition: service_healthy
+      redis-broker:
+        condition: service_healthy
+
+  audit-service:
+    build:
+      context: ./services/audit-service
+      dockerfile: Dockerfile
+    container_name: audit-service
+    env_file: .env
+    environment:
+      NODE_ENV: production
+    networks:
+      - crm_network
+    depends_on:
+      - mysql-master
+      - redis-broker
+
+  file-service:
+    build:
+      context: ./services/file-service
+      dockerfile: Dockerfile
+    container_name: file-service
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 4002
+    volumes:
+      - ./data/files:/var/crm_data
+    networks:
+      - crm_network
+    ports:
+      - "4002:4002"
+    depends_on:
+      - mysql-master
+
+  email-service:
+    build:
+      context: ./services/email-service
+      dockerfile: Dockerfile
+    container_name: email-service
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 4003
+    ports:
+      - "4003:4003"
+    networks:
+      - crm_network
+    depends_on:
+      - mysql-master
+      - redis-broker
+
+  ticket-service:
+    build:
+      context: ./services/ticket-service
+      dockerfile: Dockerfile
+    container_name: ticket-service
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 4005
+    networks:
+      - crm_network
+    ports:
+      - "4005:4005"
+    depends_on:
+      - mysql-master
+
+  main-frontend:
+    build:
+      context: ./frontend/main-app
+      dockerfile: Dockerfile
+    container_name: main-frontend
+    restart: always
+    networks:
+      - crm_network
+
+  caddy-gateway:
+    image: caddy:2-alpine
+    container_name: caddy-gateway
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - crm_network
+    depends_on:
+      - super-admin
+      - main-frontend
+
+networks:
+  crm_network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
