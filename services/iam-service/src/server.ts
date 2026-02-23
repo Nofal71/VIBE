@@ -9,6 +9,8 @@ import { FeaturePermission } from './models/FeaturePermission';
 import { FieldLock } from './models/FieldLock';
 import { seedSuperAdmin } from './seeders/superAdminSeeder';
 import authRoutes from './routes/authRoutes';
+import roleRoutes from './routes/roleRoutes';
+import userRoutes from './routes/userRoutes';
 
 const app = express();
 app.use(cors());
@@ -16,6 +18,8 @@ app.use(express.json());
 
 // ── Routes ─────────────────────────────────────────────────────────────────────
 app.use('/auth', authRoutes);
+app.use('/roles', roleRoutes);
+app.use('/users', userRoutes);
 
 const sequelize = new Sequelize(
     process.env.DB_NAME || 'saas_master_db',
@@ -30,6 +34,9 @@ const sequelize = new Sequelize(
 );
 
 // Init models
+import { setMasterSequelize } from './utils/masterDbResolver';
+setMasterSequelize(sequelize);
+
 User.initModel(sequelize);
 Role.initModel(sequelize);
 Permission.initModel(sequelize);
@@ -40,7 +47,7 @@ FieldLock.initModel(sequelize);
 // Any associations can be set up here if needed
 // e.g. User.belongsTo(Role, { foreignKey: 'role_id' })
 
-app.get('/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/health', (req: express.Request, res: express.Response) => res.json({ status: 'ok' }));
 
 const PORT = process.env.PORT || 4004;
 

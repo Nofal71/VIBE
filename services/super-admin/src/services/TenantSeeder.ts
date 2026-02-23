@@ -9,7 +9,7 @@ export class TenantSeeder {
         try {
             console.log(`[TenantSeeder] Generating internal baseline structures executing securely into DB: ${dbName}`);
 
-            
+
             const sequelize = new Sequelize(
                 dbName,
                 process.env.MYSQL_USER || 'admin',
@@ -22,10 +22,11 @@ export class TenantSeeder {
                 }
             );
 
-            
+
             const Role = sequelize.define('role', {
                 id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
-                name: { type: DataTypes.STRING, allowNull: false, unique: true }
+                name: { type: DataTypes.STRING, allowNull: false, unique: true },
+                is_default: { type: DataTypes.BOOLEAN, defaultValue: false }
             }, { timestamps: false });
 
             const User = sequelize.define('user', {
@@ -39,22 +40,25 @@ export class TenantSeeder {
                 requires_password_change: { type: DataTypes.BOOLEAN, defaultValue: false }
             }, { timestamps: true });
 
-            await sequelize.sync({ alter: true }); 
+            await sequelize.sync({ alter: true });
 
-            
+
             const defaultRoles = config?.default_roles_json?.roles || ['Admin'];
 
             let adminRoleId = null;
             for (const r of defaultRoles) {
-                const [roleRecord] = await Role.findOrCreate({ where: { name: r } });
+                const [roleRecord] = await Role.findOrCreate({
+                    where: { name: r },
+                    defaults: { is_default: true }
+                });
                 if (r === 'Admin') adminRoleId = (roleRecord as any).id;
             }
 
-            
+
             const userId = uuidv4();
             const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
-            
+
             await User.create({
                 id: userId,
                 email: adminEmail,
@@ -66,8 +70,8 @@ export class TenantSeeder {
                 requires_password_change: true
             });
 
-            
-            
+
+
             await masterSequelize.query(
                 `INSERT INTO users (id, email, password_hash, first_name, last_name, \`role\`, tenant_id, role_id, is_active, requires_password_change, createdAt, updatedAt) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
@@ -87,8 +91,8 @@ export class TenantSeeder {
                         'ADMIN',
                         tenantId,
                         adminRoleId,
-                        1, 
-                        1  
+                        1,
+                        1
                     ],
                     type: QueryTypes.INSERT
                 }
