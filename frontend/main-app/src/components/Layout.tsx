@@ -4,14 +4,16 @@ import { Sidebar } from './Sidebar';
 import { useTheme } from '../context/ThemeContext';
 import UpgradeModal from './UpgradeModal';
 import { PlanLimitProvider } from '../context/PlanLimitContext';
+import { GlobalSearch } from './GlobalSearch';
 
 export const Layout: React.FC = () => {
     const { scaleClass } = useTheme();
 
     return (
         <PlanLimitProvider>
-            {}
+            {/* Global Modals & Utilities */}
             <UpgradeModal />
+            <GlobalSearch />
 
             <div className={`flex h-screen bg-gray-100 overflow-hidden font-sans ${scaleClass}`}>
                 <Sidebar />

@@ -40,6 +40,7 @@ import WebFormBuilder from './pages/crm/settings/WebFormBuilder';
 
 
 import { Layout } from './components/Layout';
+import { AuthProvider } from './context/AuthContext';
 import { TenantProvider } from './context/TenantContext';
 import { PermissionProvider } from './context/PermissionContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -55,20 +56,19 @@ export default function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          {}
+          {/* Landing Pages */}
           <Route
             path="/"
             element={isMainLanding ? <MainLandingPage /> : <DepartmentLanding />}
           />
 
-          {}
+          {/* Error & Login */}
           <Route path="/suspended" element={<AccountSuspended />} />
           <Route path="/login" element={<TenantLogin />} />
 
-          {}
+          {/* Super Admin Routes */}
           <Route path="/super-admin/login" element={<SuperAdminLogin />} />
           <Route path="/super-admin" element={<RequireMasterAuth><SuperAdminLayout /></RequireMasterAuth>}>
-            {}
             <Route index element={<Navigate to="/super-admin/provision" replace />} />
             <Route path="provision" element={<ProvisioningDashboard />} />
             <Route path="blueprints" element={<DepartmentEditor />} />
@@ -77,17 +77,19 @@ export default function App() {
             <Route path="companies/:id" element={<CompanyDetail />} />
           </Route>
 
-          {}
+          {/* Tenant CRM Routes */}
           <Route
             path="/crm"
             element={
-              <AuthGuard>
-                <TenantProvider>
-                  <PermissionProvider>
-                    <Layout />
-                  </PermissionProvider>
-                </TenantProvider>
-              </AuthGuard>
+              <AuthProvider>
+                <AuthGuard>
+                  <TenantProvider>
+                    <PermissionProvider>
+                      <Layout />
+                    </PermissionProvider>
+                  </TenantProvider>
+                </AuthGuard>
+              </AuthProvider>
             }
           >
             <Route path="change-password" element={<ForceChangePassword />} />
