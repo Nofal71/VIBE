@@ -52,7 +52,6 @@ services:
       - "4000:4000"
     volumes:
       - ./data/tenants:/usr/data/tenants
-      - ./deployments:/usr/deployments
     depends_on:
       mysql-master:
         condition: service_healthy
