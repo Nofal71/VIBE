@@ -3,9 +3,10 @@
 ## Core Architecture
 - **Type**: Multi-tenant SaaS CRM
 - **Infrastructure Strategy**: 
-  - Dedicated Deployments per docker container
-  - Bind Mount Approach for file management and MySQL storage
-  - Caddy for Secure SSL per sub domain or custom domain
+  - Single Shared Backend & DB Infrastructure (No separate containers per tenant).
+  - Dynamic Database Schema per Tenant (Single MySQL Container).
+  - Bind Mount Approach: Collective `./data/mysql` for DB, unified `./data/tenants/{tenant}` for files (if needed).
+  - Caddy for Secure Auto-SSL (`on_demand_tls`) per subdomain or custom domain.
 - **Design Reference**: Follow UI/Layout and business flow concepts from `D:\Others\saas-canvas-main`
 
 ---
@@ -60,7 +61,7 @@ Core components required for every CRM instance:
 
 - [ ] **Phase 1**: Initial Context and Layout Structuring
 - [x] **Phase 2**: Infrastructure & Docker Compose (Bind Mounts, Caddy SSL routing setup)
-- [ ] **Phase 3**: Global Database Strategy & Tenant Isolation Models
+- [x] **Phase 3**: Global Database Strategy & Tenant Isolation Models
 - [ ] **Phase 4**: Super Admin Master Tenant Setup
 - [ ] **Phase 5**: Blue-Print Engine & Department Designer Architecture
 - [ ] **Phase 6**: Company Admin & Role Provisioning Backbone
