@@ -1,4 +1,7 @@
 
 # DevContext - AI coding context
-.devctx/
+.devctx/*
+!.devctx/docs/
+!.devctx/logs/
+!.devctx/instructions.md
 data/
