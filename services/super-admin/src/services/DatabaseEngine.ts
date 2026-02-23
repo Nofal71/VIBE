@@ -31,7 +31,7 @@ export class DatabaseEngine {
             await tenantSequelize.authenticate();
             const queryInterface = tenantSequelize.getQueryInterface();
 
-            // Create base 'leads' table so any dynamic tables can safely apply FK constraints
+            
             await queryInterface.createTable('leads', {
                 id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
             });
@@ -45,7 +45,7 @@ export class DatabaseEngine {
                     for (const [colName, colDef] of Object.entries<any>(columnsRaw)) {
                         const parsedDef: any = { ...colDef };
 
-                        // Map type
+                        
                         switch (parsedDef.type?.toUpperCase()) {
                             case 'UUID': parsedDef.type = DataTypes.UUID; break;
                             case 'STRING': parsedDef.type = DataTypes.STRING; break;
@@ -57,7 +57,7 @@ export class DatabaseEngine {
                             default: parsedDef.type = DataTypes.STRING; break;
                         }
 
-                        // Map UUIDV4 defaultValue
+                        
                         if (parsedDef.defaultValue === 'UUIDV4') {
                             parsedDef.defaultValue = DataTypes.UUIDV4;
                         }

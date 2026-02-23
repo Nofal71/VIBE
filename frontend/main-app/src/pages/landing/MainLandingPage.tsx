@@ -3,7 +3,7 @@ import React from 'react';
 const MainLandingPage: React.FC = () => {
     return (
         <div className="bg-white min-h-screen flex flex-col font-sans">
-            {/* Navbar segment */}
+            {}
             <header className="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
                     <div className="text-2xl font-extrabold text-blue-900 tracking-tight">IHSolution.tech</div>
@@ -15,7 +15,7 @@ const MainLandingPage: React.FC = () => {
                 </div>
             </header>
 
-            {/* Hero Box */}
+            {}
             <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 text-center flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-white">
                 <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 tracking-tight mb-6 mt-10">
                     The Infinite SaaS <span className="text-blue-600">Enterprise CRM</span>.
@@ -30,7 +30,7 @@ const MainLandingPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Industry Solutions Segment */}
+            {}
             <section id="solutions" className="py-20 bg-gray-50 border-t border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -41,7 +41,7 @@ const MainLandingPage: React.FC = () => {
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-10">
-                        {/* Immigration Block */}
+                        {}
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-2xl transition duration-300">
                             <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
                                 <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -50,7 +50,7 @@ const MainLandingPage: React.FC = () => {
                             <p className="text-gray-600 mb-6">Light mode themes aligned mapped uniquely over custom Visa tables, mapping automated Welcome funnels safely.</p>
                         </div>
 
-                        {/* Real Estate Block */}
+                        {}
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-2xl transition duration-300">
                             <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center mb-6">
                                 <svg className="w-8 h-8 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
@@ -62,7 +62,7 @@ const MainLandingPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Pricing Module */}
+            {}
             <section id="pricing" className="py-20 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -94,7 +94,7 @@ const MainLandingPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Footer */}
+            {}
             <footer className="bg-gray-900 text-white py-12 text-center">
                 <p className="text-gray-400 mb-2">Developed strictly following rigid Microservice constraints via Express.</p>
                 <p className="text-gray-600 text-sm">© 2026 IHSolution.tech. All rights reserved.</p>

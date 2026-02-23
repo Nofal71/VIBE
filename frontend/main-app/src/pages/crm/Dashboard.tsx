@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../api/axiosConfig';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 interface DashboardStats {
     date_range: { startDate: string | null; endDate: string | null };
@@ -18,7 +18,7 @@ interface DashboardStats {
     }[];
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 
 const formatCurrency = (n: number): string =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
@@ -30,14 +30,14 @@ const thirtyDaysAgo = () => {
     return d.toISOString().split('T')[0];
 };
 
-// ─── Stat Card ────────────────────────────────────────────────────────────────
+
 
 interface StatCardProps {
     label: string;
     value: string | number;
     icon: string;
     sub?: string;
-    color: string; // bg gradient class
+    color: string; 
 }
 
 const StatCard: React.FC<StatCardProps> = ({ label, value, icon, sub, color }) => (
@@ -49,7 +49,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, sub, color }) =
     </div>
 );
 
-// ─── Main Dashboard ───────────────────────────────────────────────────────────
+
 
 const Dashboard: React.FC = () => {
     const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -64,7 +64,7 @@ const Dashboard: React.FC = () => {
             const res = await api.get(`/analytics/dashboard?${params.toString()}`);
             setStats(res.data);
         } catch {
-            // Fallback demo data so the page is never blank
+            
             setStats({
                 date_range: { startDate, endDate },
                 totalLeads: 142,
@@ -91,7 +91,7 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => { fetchStats(); }, [fetchStats]);
 
-    // Stage chart rendering
+    
     const maxCount = Math.max(...(stats?.leadsByStage.map((s) => s.count) ?? [1]), 1);
 
     const STAGE_COLORS: Record<string, string> = {
@@ -104,7 +104,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {/* Header + Date Range */}
+            {}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Analytics Dashboard</h1>
@@ -138,7 +138,7 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* KPI Cards */}
+            {}
             {loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                     {[...Array(4)].map((_, i) => (
@@ -178,10 +178,10 @@ const Dashboard: React.FC = () => {
                 </div>
             ) : null}
 
-            {/* Two column section */}
+            {}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-                {/* ── Pipeline Breakdown ── */}
+                {}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100">
                         <h2 className="font-extrabold text-gray-800">Pipeline Breakdown</h2>
@@ -211,7 +211,7 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
 
-                {/* ── Staff Leaderboard ── */}
+                {}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                         <div>

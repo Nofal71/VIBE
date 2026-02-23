@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../../../api/axiosConfig';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
 
 interface BrandingConfig {
     primary_color: string;
@@ -9,7 +9,7 @@ interface BrandingConfig {
     sidebar_theme: 'dark' | 'light';
 }
 
-// ─── Theme Presets ────────────────────────────────────────────────────────────
+
 
 const COLOR_PRESETS = [
     { label: 'Indigo', value: '#4F46E5' },
@@ -24,7 +24,7 @@ const COLOR_PRESETS = [
 
 type SidebarTheme = 'dark' | 'light';
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const BrandingSettings: React.FC = () => {
     const [form, setForm] = useState<BrandingConfig>({
@@ -38,7 +38,7 @@ const BrandingSettings: React.FC = () => {
     const [error, setError] = useState('');
     const importRef = useRef<HTMLInputElement>(null);
 
-    // ─── Load existing branding ───────────────────────────────────────────────
+    
 
     useEffect(() => {
         api.get('/tenant/settings/branding')
@@ -46,11 +46,11 @@ const BrandingSettings: React.FC = () => {
                 const b = res.data?.branding;
                 if (b) setForm({ primary_color: b.primary_color ?? '#4F46E5', logo_url: b.logo_url ?? '', sidebar_theme: b.sidebar_theme ?? 'dark' });
             })
-            .catch(() => { }) // silently use defaults
+            .catch(() => { }) 
             .finally(() => setLoading(false));
     }, []);
 
-    // ─── Save ─────────────────────────────────────────────────────────────────
+    
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -68,7 +68,7 @@ const BrandingSettings: React.FC = () => {
         }
     };
 
-    // ─── Export Theme JSON ────────────────────────────────────────────────────
+    
 
     const exportTheme = () => {
         const blob = new Blob([JSON.stringify(form, null, 2)], { type: 'application/json' });
@@ -80,7 +80,7 @@ const BrandingSettings: React.FC = () => {
         URL.revokeObjectURL(url);
     };
 
-    // ─── Import Theme JSON ────────────────────────────────────────────────────
+    
 
     const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -102,11 +102,11 @@ const BrandingSettings: React.FC = () => {
             }
         };
         reader.readAsText(file);
-        // Reset file input
+        
         if (importRef.current) importRef.current.value = '';
     };
 
-    // ─── Render ───────────────────────────────────────────────────────────────
+    
 
     if (loading) {
         return <div className="py-20 text-center text-gray-400 animate-pulse">Loading branding settings...</div>;
@@ -114,16 +114,16 @@ const BrandingSettings: React.FC = () => {
 
     return (
         <div className="space-y-8 max-w-3xl">
-            {/* Header */}
+            {}
             <div>
                 <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Branding & Theme</h1>
                 <p className="text-sm text-gray-500 mt-1">Customize your CRM's visual identity. Changes are scoped to this workspace.</p>
             </div>
 
-            {/* Live Preview Strip */}
+            {}
             <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
                 <div className="flex h-20">
-                    {/* Sidebar preview */}
+                    {}
                     <div
                         className="w-24 h-full flex flex-col items-center justify-center gap-1.5 transition-colors duration-300"
                         style={{ backgroundColor: form.sidebar_theme === 'dark' ? '#111827' : '#ffffff', borderRight: `1px solid ${form.sidebar_theme === 'dark' ? '#1f2937' : '#e5e7eb'}` }}
@@ -133,7 +133,7 @@ const BrandingSettings: React.FC = () => {
                                 style={{ backgroundColor: i === 0 ? form.primary_color : (form.sidebar_theme === 'dark' ? '#374151' : '#e5e7eb'), opacity: i === 0 ? 1 : 0.5 }} />
                         ))}
                     </div>
-                    {/* Content area preview */}
+                    {}
                     <div className="flex-1 bg-gray-50 flex flex-col justify-center px-6 gap-2">
                         <div className="flex items-center gap-3">
                             {form.logo_url
@@ -152,14 +152,14 @@ const BrandingSettings: React.FC = () => {
                 </div>
             </div>
 
-            {/* Form */}
+            {}
             <form onSubmit={handleSave} className="space-y-6">
 
-                {/* Primary Color */}
+                {}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
                     <h2 className="font-extrabold text-gray-800">Primary Color</h2>
                     <div className="flex items-center gap-4 flex-wrap">
-                        {/* Color picker */}
+                        {}
                         <label className="relative cursor-pointer group">
                             <input
                                 type="color"
@@ -188,7 +188,7 @@ const BrandingSettings: React.FC = () => {
                         />
                     </div>
 
-                    {/* Presets */}
+                    {}
                     <div>
                         <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Presets</p>
                         <div className="flex flex-wrap gap-2">
@@ -207,7 +207,7 @@ const BrandingSettings: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Logo URL */}
+                {}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-3">
                     <h2 className="font-extrabold text-gray-800">Logo URL</h2>
                     <p className="text-xs text-gray-500">Enter a publicly accessible URL for your company logo. SVG or PNG recommended.</p>
@@ -231,7 +231,7 @@ const BrandingSettings: React.FC = () => {
                     )}
                 </div>
 
-                {/* Sidebar Theme */}
+                {}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-3">
                     <h2 className="font-extrabold text-gray-800">Sidebar Theme</h2>
                     <div className="flex gap-3">
@@ -243,7 +243,7 @@ const BrandingSettings: React.FC = () => {
                                 className={`flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition
                   ${form.sidebar_theme === mode ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'}`}
                             >
-                                {/* Mini sidebar preview */}
+                                {}
                                 <div className={`w-16 h-10 rounded-lg flex gap-1 p-1.5 ${mode === 'dark' ? 'bg-gray-900' : 'bg-white border border-gray-200'}`}>
                                     <div className="w-2 flex flex-col gap-0.5 justify-center">
                                         {[...Array(3)].map((_, i) => (
@@ -260,7 +260,7 @@ const BrandingSettings: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Import / Export */}
+                {}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h2 className="font-extrabold text-gray-800 mb-1">Theme Templates</h2>
                     <p className="text-xs text-gray-500 mb-4">
@@ -298,7 +298,7 @@ const BrandingSettings: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Feedback & Submit */}
+                {}
                 {error && (
                     <div className="bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3">
                         ⚠️ {error}

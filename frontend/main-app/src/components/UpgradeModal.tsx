@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { usePlanLimits } from '../context/PlanLimitContext';
 
-// ─── Plan Tier Cards ─────────────────────────────────────────────────────────
+
 
 interface PlanCard {
     name: string;
@@ -55,12 +55,12 @@ const PLANS: PlanCard[] = [
     },
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const UpgradeModal: React.FC = () => {
     const { showUpgradeModal, setShowUpgradeModal, limitReason, planLimits } = usePlanLimits();
 
-    // Prevent body scroll when modal is open
+    
     useEffect(() => {
         if (showUpgradeModal) {
             document.body.style.overflow = 'hidden';
@@ -70,7 +70,7 @@ const UpgradeModal: React.FC = () => {
         return () => { document.body.style.overflow = ''; };
     }, [showUpgradeModal]);
 
-    // Dismiss on Escape
+    
     useEffect(() => {
         const handleKey = (e: KeyboardEvent) => {
             if (e.key === 'Escape') setShowUpgradeModal(false);
@@ -83,18 +83,18 @@ const UpgradeModal: React.FC = () => {
 
     return (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-            {/* Backdrop */}
+            {}
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-md"
                 onClick={() => setShowUpgradeModal(false)}
             />
 
-            {/* Panel */}
+            {}
             <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl mx-4 overflow-hidden max-h-[90vh] overflow-y-auto">
 
-                {/* Header */}
+                {}
                 <div className="relative bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-700 px-8 py-10 text-white text-center overflow-hidden">
-                    {/* Decorative blobs */}
+                    {}
                     <div className="absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full" />
                     <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-white/10 rounded-full" />
 
@@ -116,7 +116,7 @@ const UpgradeModal: React.FC = () => {
                             {limitReason || 'You have reached the limit of your current plan. Upgrade to unlock unlimited access and premium features.'}
                         </p>
 
-                        {/* Current Limits summary */}
+                        {}
                         {Object.keys(planLimits).length > 0 && (
                             <div className="mt-6 inline-flex flex-wrap gap-4 justify-center">
                                 {planLimits.max_leads !== undefined && (
@@ -142,7 +142,7 @@ const UpgradeModal: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Plan Cards */}
+                {}
                 <div className="p-8">
                     <p className="text-center text-sm text-gray-500 font-medium mb-6">
                         Choose a plan that fits your team's growth
@@ -199,7 +199,7 @@ const UpgradeModal: React.FC = () => {
                         ))}
                     </div>
 
-                    {/* Dismiss */}
+                    {}
                     <div className="text-center mt-6">
                         <button
                             onClick={() => setShowUpgradeModal(false)}

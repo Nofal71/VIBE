@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 interface Stage {
     name: string;
@@ -17,12 +17,12 @@ interface BlueprintPayload {
 
 type StatusState = { type: 'idle' | 'loading' | 'ai_loading' | 'success' | 'error'; msg?: string };
 
-// ─── Super Admin API base URL ─────────────────────────────────────────────────
+
 const SUPER_API = '';
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  SECTION 2: Hardcoded Template Library
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 interface TemplateCard {
     id: string;
@@ -30,7 +30,7 @@ interface TemplateCard {
     label: string;
     description: string;
     tables: string[];
-    color: string; // card accent
+    color: string; 
     payload: BlueprintPayload;
 }
 
@@ -396,25 +396,25 @@ const TEMPLATES: TemplateCard[] = [
     },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  Helper — pretty-print JSON for editor
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 const toEditorJson = (payload: BlueprintPayload): string =>
     JSON.stringify(payload.schema_json, null, 2);
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  Main Component
-// ─────────────────────────────────────────────────────────────────────────────
+
+
+
 
 const DepartmentEditor: React.FC = () => {
-    // ── AI Section state ──────────────────────────────────────────────────────
+    
     const [aiPrompt, setAiPrompt] = useState('');
     const [aiGenerating, setAiGenerating] = useState(false);
     const [aiError, setAiError] = useState('');
     const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
 
-    // ── Blueprint Editor state ────────────────────────────────────────────────
+    
     const [name, setName] = useState('');
     const [schemaJson, setSchemaJson] = useState('{\n  "tables": []\n}');
     const [rolesJson, setRolesJson] = useState('["Admin", "Manager", "Staff"]');
@@ -429,7 +429,7 @@ const DepartmentEditor: React.FC = () => {
 
     const [status, setStatus] = useState<StatusState>({ type: 'idle' });
 
-    // ── Hydrate editor from a blueprint payload ────────────────────────────────
+    
 
     const applyPayload = useCallback((payload: BlueprintPayload, templateId?: string) => {
         setName(payload.name);
@@ -441,13 +441,13 @@ const DepartmentEditor: React.FC = () => {
         if (templateId) setSelectedTemplateId(templateId);
         setStatus({ type: 'idle' });
         setAiError('');
-        // Smooth scroll to editor section
+        
         setTimeout(() => {
             document.getElementById('blueprint-engine')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
     }, []);
 
-    // ── Section 1: AI Generation ───────────────────────────────────────────────
+    
 
     const handleAIGenerate = async () => {
         if (!aiPrompt.trim()) return;
@@ -476,7 +476,7 @@ const DepartmentEditor: React.FC = () => {
         }
     };
 
-    // ── Save Blueprint ─────────────────────────────────────────────────────────
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -524,20 +524,20 @@ const DepartmentEditor: React.FC = () => {
         }
     };
 
-    // ── Stage CRUD helpers ─────────────────────────────────────────────────────
+    
 
     const addStage = () => setStages((s) => [...s, { name: 'New Stage', color: '#6366f1' }]);
     const removeStage = (i: number) => setStages((s) => s.filter((_, idx) => idx !== i));
     const updateStage = (i: number, field: keyof Stage, value: string) =>
         setStages((s) => s.map((st, idx) => idx === i ? { ...st, [field]: value } : st));
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  RENDER
-    // ─────────────────────────────────────────────────────────────────────────
+    
+    
+    
 
     return (
         <div className="min-h-screen bg-gray-950 text-gray-100 pb-20">
-            {/* ── Page Header ── */}
+            {}
             <div className="bg-gradient-to-r from-indigo-900/60 via-purple-900/50 to-gray-950 border-b border-white/10 px-8 py-10">
                 <div className="max-w-6xl mx-auto flex items-start gap-5">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-3xl shadow-xl flex-shrink-0">
@@ -555,9 +555,9 @@ const DepartmentEditor: React.FC = () => {
 
             <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
 
-                {/* ═══ SECTION 1: AI ARCHITECT ═══════════════════════════════════════ */}
+                {}
                 <section>
-                    {/* Section label */}
+                    {}
                     <div className="flex items-center gap-3 mb-5">
                         <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-lg">✨</div>
                         <div>
@@ -567,7 +567,7 @@ const DepartmentEditor: React.FC = () => {
                     </div>
 
                     <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
-                        {/* Decorative gradient top bar */}
+                        {}
                         <div className="h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-blue-500" />
 
                         <div className="p-6 space-y-4">
@@ -615,7 +615,7 @@ const DepartmentEditor: React.FC = () => {
                                 )}
                             </div>
 
-                            {/* AI capability pills */}
+                            {}
                             <div className="flex flex-wrap gap-2 pt-1">
                                 {['Schema Tables', 'Column Types', 'Pipeline Stages', 'Role Definitions', 'Brand Colors'].map((tag) => (
                                     <span key={tag} className="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 rounded-full px-3 py-1 font-semibold">
@@ -627,7 +627,7 @@ const DepartmentEditor: React.FC = () => {
                     </div>
                 </section>
 
-                {/* ═══ SECTION 2: TEMPLATE LIBRARY ════════════════════════════════════ */}
+                {}
                 <section>
                     <div className="flex items-center gap-3 mb-5">
                         <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-lg">📚</div>
@@ -651,7 +651,7 @@ const DepartmentEditor: React.FC = () => {
                                             : 'border-gray-800 bg-gray-900 hover:border-gray-600 hover:bg-gray-800/60'}`}
                                     style={{ borderLeftColor: isSelected ? tpl.color : undefined, borderLeftWidth: isSelected ? 3 : undefined }}
                                 >
-                                    {/* Selected badge */}
+                                    {}
                                     {isSelected && (
                                         <div className="absolute top-3 right-3 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-widest"
                                             style={{ color: tpl.color, backgroundColor: `${tpl.color}22` }}>
@@ -659,7 +659,7 @@ const DepartmentEditor: React.FC = () => {
                                         </div>
                                     )}
 
-                                    {/* Icon + name */}
+                                    {}
                                     <div className="flex items-center gap-3 mb-3">
                                         <div className="text-3xl">{tpl.icon}</div>
                                         <div>
@@ -668,10 +668,10 @@ const DepartmentEditor: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* Description */}
+                                    {}
                                     <p className="text-xs text-gray-400 leading-relaxed mb-3">{tpl.description}</p>
 
-                                    {/* Tables */}
+                                    {}
                                     <div className="flex flex-wrap gap-1.5">
                                         {tpl.tables.map((t) => (
                                             <span key={t} className="text-[10px] font-bold px-2 py-0.5 rounded-full border"
@@ -686,7 +686,7 @@ const DepartmentEditor: React.FC = () => {
                     </div>
                 </section>
 
-                {/* ═══ SECTION 3: BLUEPRINT ENGINE ════════════════════════════════════ */}
+                {}
                 <section id="blueprint-engine">
                     <div className="flex items-center gap-3 mb-5">
                         <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-lg">⚙️</div>
@@ -696,7 +696,7 @@ const DepartmentEditor: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Status alerts */}
+                    {}
                     {status.msg && (
                         <div className={`mb-5 px-5 py-3.5 rounded-xl border font-semibold text-sm
               ${status.type === 'success'
@@ -707,7 +707,7 @@ const DepartmentEditor: React.FC = () => {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Card: Basic Info */}
+                        {}
                         <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 space-y-4">
                             <h3 className="font-extrabold text-gray-300 text-sm uppercase tracking-wider">Basic Info</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -760,7 +760,7 @@ const DepartmentEditor: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Roles */}
+                            {}
                             <div>
                                 <label className="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5">Roles (JSON Array) *</label>
                                 <input
@@ -773,7 +773,7 @@ const DepartmentEditor: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Card: Pipeline Stages */}
+                        {}
                         <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 space-y-4">
                             <div className="flex items-center justify-between">
                                 <h3 className="font-extrabold text-gray-300 text-sm uppercase tracking-wider">Pipeline Stages</h3>
@@ -788,7 +788,7 @@ const DepartmentEditor: React.FC = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {stages.map((stage, i) => (
                                     <div key={i} className="flex items-center gap-2 bg-gray-800 rounded-xl p-3 border border-gray-700">
-                                        {/* Color swatch */}
+                                        {}
                                         <div className="w-6 h-6 rounded-lg border border-gray-600 cursor-pointer overflow-hidden flex-shrink-0">
                                             <input
                                                 type="color"
@@ -798,7 +798,7 @@ const DepartmentEditor: React.FC = () => {
                                                 title="Stage color"
                                             />
                                         </div>
-                                        {/* Name */}
+                                        {}
                                         <input
                                             type="text"
                                             value={stage.name}
@@ -806,11 +806,11 @@ const DepartmentEditor: React.FC = () => {
                                             className="flex-1 bg-transparent text-sm text-white focus:outline-none placeholder-gray-600"
                                             placeholder="Stage name"
                                         />
-                                        {/* Order indicator */}
+                                        {}
                                         <div className="w-5 h-5 rounded-full bg-gray-700 flex items-center justify-center text-[10px] font-bold text-gray-400 flex-shrink-0">
                                             {i + 1}
                                         </div>
-                                        {/* Remove */}
+                                        {}
                                         <button
                                             type="button"
                                             onClick={() => removeStage(i)}
@@ -823,7 +823,7 @@ const DepartmentEditor: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Card: Schema JSON */}
+                        {}
                         <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 space-y-3">
                             <div className="flex items-start justify-between">
                                 <div>
@@ -846,7 +846,7 @@ const DepartmentEditor: React.FC = () => {
                             />
                         </div>
 
-                        {/* Submit */}
+                        {}
                         <div className="flex items-center gap-4">
                             <button
                                 type="submit"

@@ -57,12 +57,12 @@ const CalendarView: React.FC = () => {
     const isToday = (day: number) =>
         day === now.getDate() && viewMonth === now.getMonth() && viewYear === now.getFullYear();
 
-    // Build calendar grid cells
+    
     const cells: (number | null)[] = [
         ...Array(firstDayOfMonth).fill(null),
         ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
     ];
-    // Pad to complete last row
+    
     while (cells.length % 7 !== 0) cells.push(null);
 
     return (
@@ -79,7 +79,7 @@ const CalendarView: React.FC = () => {
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                {/* Day-of-week header */}
+                {}
                 <div className="grid grid-cols-7 border-b border-gray-100">
                     {DAYS_OF_WEEK.map((d) => (
                         <div key={d} className="py-3 text-center text-xs font-bold text-gray-400 uppercase tracking-widest">
@@ -88,7 +88,7 @@ const CalendarView: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Calendar grid */}
+                {}
                 <div className="grid grid-cols-7">
                     {cells.map((day, idx) => {
                         const dayTasks = day ? getTasksForDay(day) : [];
@@ -132,7 +132,7 @@ const CalendarView: React.FC = () => {
                 </div>
             </div>
 
-            {/* Day detail panel */}
+            {}
             {selectedDay && (
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <h3 className="font-extrabold text-gray-900 text-lg mb-4">

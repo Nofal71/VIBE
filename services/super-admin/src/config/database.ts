@@ -10,7 +10,7 @@ export const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
     host: dbHost,
     port: dbPort,
     dialect: 'mysql',
-    logging: false, // Set to console.log to see SQL queries
+    logging: false, 
     pool: {
         max: 10,
         min: 0,

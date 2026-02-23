@@ -5,7 +5,7 @@ const DepartmentLanding: React.FC = () => {
         const hostname = window.location.hostname;
         const parts = hostname.split('.');
 
-        // Extract subdomain primarily for ihsolution.tech structures
+        
         if (parts.length >= 3 && hostname.includes('ihsolution.tech')) {
             return parts[0].toLowerCase();
         }

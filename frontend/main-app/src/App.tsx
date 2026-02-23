@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-// ── Landing pages ─────────────────────────────────────────────────────────────
+
 import MainLandingPage from './pages/landing/MainLandingPage';
 import DepartmentLanding from './pages/landing/DepartmentLanding';
 import AccountSuspended from './pages/landing/AccountSuspended';
 
-// ── Super Admin pages ─────────────────────────────────────────────────────────
+
 import SuperAdminLayout from './components/SuperAdminLayout';
 import RequireMasterAuth from './components/RequireMasterAuth';
 import SuperAdminLogin from './pages/super-admin/SuperAdminLogin';
@@ -16,7 +16,7 @@ import SystemBroadcasts from './pages/super-admin/SystemBroadcasts';
 import CompanyDirectory from './pages/super-admin/CompanyDirectory';
 import CompanyDetail from './pages/super-admin/CompanyDetail';
 
-// ── CRM pages ─────────────────────────────────────────────────────────────────
+
 import Dashboard from './pages/crm/Dashboard';
 import LeadList from './pages/crm/LeadList';
 import LeadProfile from './pages/crm/LeadProfile';
@@ -38,7 +38,7 @@ import BrandingSettings from './pages/crm/settings/BrandingSettings';
 import Preferences from './pages/crm/settings/Preferences';
 import WebFormBuilder from './pages/crm/settings/WebFormBuilder';
 
-// ── CRM layout & context ──────────────────────────────────────────────────────
+
 import { Layout } from './components/Layout';
 import { TenantProvider } from './context/TenantContext';
 import { PermissionProvider } from './context/PermissionContext';
@@ -55,20 +55,20 @@ export default function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          {/* ── Landing ───────────────────────────────────────────────────── */}
+          {}
           <Route
             path="/"
             element={isMainLanding ? <MainLandingPage /> : <DepartmentLanding />}
           />
 
-          {/* ── Public global pages (outside tenant/admin layouts) ─────────── */}
+          {}
           <Route path="/suspended" element={<AccountSuspended />} />
           <Route path="/login" element={<TenantLogin />} />
 
-          {/* ── Super Admin (nested under dedicated layout) ────────────────── */}
+          {}
           <Route path="/super-admin/login" element={<SuperAdminLogin />} />
           <Route path="/super-admin" element={<RequireMasterAuth><SuperAdminLayout /></RequireMasterAuth>}>
-            {/* Default redirect */}
+            {}
             <Route index element={<Navigate to="/super-admin/provision" replace />} />
             <Route path="provision" element={<ProvisioningDashboard />} />
             <Route path="blueprints" element={<DepartmentEditor />} />
@@ -77,7 +77,7 @@ export default function App() {
             <Route path="companies/:id" element={<CompanyDetail />} />
           </Route>
 
-          {/* ── Tenant CRM ────────────────────────────────────────────────── */}
+          {}
           <Route
             path="/crm"
             element={

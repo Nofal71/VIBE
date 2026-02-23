@@ -17,7 +17,7 @@ const AuditLogView: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Explicit targeting of Audit Service endpoints leveraging generic x-tenant-id mappings via Axios intercepts
+        
         api.get('/audit/logs')
             .then(res => {
                 setLogs(res.data.logs || []);
@@ -26,7 +26,7 @@ const AuditLogView: React.FC = () => {
             .catch(err => {
                 console.error('Error fetching audit metrics natively', err);
 
-                // Secure UI Fallback Mock mapping exact expected metrics tracking payload
+                
                 setLogs([
                     {
                         id: '1', action: 'UPDATE', table_name: 'deals', record_id: 'deal-98822',

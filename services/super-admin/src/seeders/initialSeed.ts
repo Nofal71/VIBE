@@ -14,7 +14,7 @@ export const runInitialSeed = async (): Promise<void> => {
         } else {
             console.log('Database is empty. Populating default System settings (Phase 13)...');
 
-            // 1. Seed Default Plans
+            
             await Plan.create({
                 id: 'uuid-pro-plan',
                 name: 'Pro Plan',
@@ -31,7 +31,7 @@ export const runInitialSeed = async (): Promise<void> => {
                 features: { reports: false, automations: false },
             });
 
-            // 2. Seed Default Department Blueprints
+            
             await DepartmentBlueprint.create({
                 id: 'uuid-immigration',
                 name: 'Immigration',
@@ -84,7 +84,7 @@ export const runInitialSeed = async (): Promise<void> => {
                 },
                 default_roles_json: { roles: ['Admin', 'Broker', 'Agent'] },
                 ui_config_json: {
-                    primary_color: '#4F46E5', // Updated to match default Tailwind brand
+                    primary_color: '#4F46E5', 
                     logo_url: 'https://via.placeholder.com/150x50/000000/4F46E5?text=Elite+Estates',
                     sidebar_theme: 'dark'
                 },
@@ -100,7 +100,7 @@ export const runInitialSeed = async (): Promise<void> => {
             console.log('Core System Seed completed.');
         }
 
-        // 3. Seed Default Demo Company (Idempotent)
+        
         const demoDomain = 'demo.localhost';
         const existingDomain = await Domain.findOne({ where: { domain_name: demoDomain } });
 
@@ -109,9 +109,9 @@ export const runInitialSeed = async (): Promise<void> => {
 
             const db_name = 'tenant_demo_default';
             const adminEmail = 'admin@' + demoDomain;
-            const tempPassword = 'admin123A1!'; // Standardized demo password
+            const tempPassword = 'admin123A1!'; 
 
-            // Create Company Record
+            
             const demoCompany = await Company.create({
                 name: 'Demo Immigration Firm',
                 plan_id: 'uuid-pro-plan',
@@ -120,23 +120,23 @@ export const runInitialSeed = async (): Promise<void> => {
                 status: 'active',
             });
 
-            // Create Domain Record
+            
             await Domain.create({
                 company_id: demoCompany.id,
                 domain_name: demoDomain,
                 is_verified: true,
             });
 
-            // Provision Infrastructure & Database
+            
             await DatabaseEngine.createTenantDatabase(db_name);
 
             const blueprint = await DepartmentBlueprint.findByPk('uuid-immigration');
             if (blueprint) {
                 await DatabaseEngine.generateDynamicSchema(db_name, blueprint.schema_json);
-                // Seed Tenant Users (Admin)
+                
                 await TenantSeeder.seedTenantBasics(db_name, blueprint, adminEmail, tempPassword, demoCompany.id);
 
-                // Phase 15 Integration: Automated Infrastructure Orchestration for Demo
+                
                 await DockerOrchestrator.provisionTenantInfrastructure(demoDomain, db_name);
 
                 console.log(`Demo Company [${demoDomain}] seeded successfully.`);

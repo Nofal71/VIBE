@@ -6,7 +6,7 @@ interface Lead {
     [key: string]: unknown;
 }
 
-// Static columns always shown; dynamic ones come from API
+
 const STATIC_COLUMNS = ['first_name', 'last_name', 'email', 'phone', 'status_id'];
 
 const LeadExcelView: React.FC = () => {
@@ -17,7 +17,7 @@ const LeadExcelView: React.FC = () => {
     const [editValue, setEditValue] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // Fetch leads and dynamic column list
+    
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -30,10 +30,10 @@ const LeadExcelView: React.FC = () => {
                     const rows: Lead[] = leadsRes.value.data?.leads ?? [];
                     setLeads(rows);
 
-                    // Auto-detect columns from first row if available
+                    
                     if (rows.length > 0) {
                         const allCols = Object.keys(rows[0]).filter((k) => k !== 'id');
-                        setColumns(allCols.slice(0, 14)); // Cap at 14 visible columns
+                        setColumns(allCols.slice(0, 14)); 
                     }
                 } else {
                     setLeads([
@@ -57,7 +57,7 @@ const LeadExcelView: React.FC = () => {
         loadData();
     }, []);
 
-    // Focus input when a cell enters edit mode
+    
     useEffect(() => {
         if (editingCell) inputRef.current?.focus();
     }, [editingCell]);
@@ -71,7 +71,7 @@ const LeadExcelView: React.FC = () => {
         if (!editingCell) return;
         const { rowId, col } = editingCell;
 
-        // Optimistic update in UI
+        
         setLeads((prev) =>
             prev.map((row) =>
                 row.id === rowId ? { ...row, [col]: editValue } : row
@@ -116,13 +116,13 @@ const LeadExcelView: React.FC = () => {
                 </div>
             </div>
 
-            {/* Scrollable spreadsheet container */}
+            {}
             <div className="overflow-auto rounded-2xl border border-gray-200 shadow-sm bg-white"
                 style={{ maxHeight: '72vh' }}>
                 <table className="min-w-full border-collapse text-xs">
                     <thead className="sticky top-0 z-10">
                         <tr className="bg-gray-800 text-white">
-                            {/* Row number header */}
+                            {}
                             <th className="w-10 px-2 py-2 text-center font-bold text-gray-400 border-r border-gray-600">#</th>
                             {columns.map((col) => (
                                 <th
@@ -140,7 +140,7 @@ const LeadExcelView: React.FC = () => {
                                 key={row.id}
                                 className={`border-b border-gray-100 ${rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'} hover:bg-blue-50/40 transition-colors`}
                             >
-                                {/* Row number */}
+                                {}
                                 <td className="w-10 px-2 py-1.5 text-center text-gray-400 font-mono border-r border-gray-100 select-none">
                                     {rowIdx + 1}
                                 </td>

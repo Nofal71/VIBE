@@ -4,7 +4,7 @@ import { DepartmentBlueprint } from './DepartmentBlueprint';
 import { Company } from './Company';
 import { Domain } from './Domain';
 
-// Setup Relationships
+
 Plan.hasMany(Company, {
     sourceKey: 'id',
     foreignKey: 'plan_id',

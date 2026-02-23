@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import RequireFeature from './RequireFeature';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
 
 interface Lead {
     id: string;
@@ -35,7 +35,7 @@ interface Stage {
     color: string;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+
 
 const COUNTRIES = [
     'AE', 'US', 'UK', 'CA', 'AU', 'IN', 'PK', 'EG', 'SA', 'NG', 'DE', 'FR', 'SG',
@@ -43,7 +43,7 @@ const COUNTRIES = [
 
 type NoteVisibility = 'PUBLIC' | 'PRIVATE' | 'ADMIN_ONLY';
 
-// ─── Quick Note Modal ─────────────────────────────────────────────────────────
+
 
 interface QuickNoteModalProps {
     lead: Lead;
@@ -81,10 +81,10 @@ const QuickNoteModal: React.FC<QuickNoteModalProps> = ({ lead, onClose, onSaved 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            {/* Backdrop */}
+            {}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
-            {/* Modal */}
+            {}
             <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <div>
@@ -134,7 +134,7 @@ const QuickNoteModal: React.FC<QuickNoteModalProps> = ({ lead, onClose, onSaved 
     );
 };
 
-// ─── Main Component ────────────────────────────────────────────────────────────
+
 
 const AdvancedLeadList: React.FC = () => {
     const navigate = useNavigate();
@@ -144,25 +144,25 @@ const AdvancedLeadList: React.FC = () => {
     const [stages, setStages] = useState<Stage[]>([]);
     const [staff, setStaff] = useState<StaffMember[]>([]);
 
-    // Selection state
+    
     const [selected, setSelected] = useState<Set<string>>(new Set());
 
-    // Filter sidebar
+    
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState<Record<string, string>>({});
 
-    // Bulk action state
+    
     const [bulkAction, setBulkAction] = useState<'assign' | 'stage' | null>(null);
     const [bulkTarget, setBulkTarget] = useState('');
     const [bulkProcessing, setBulkProcessing] = useState(false);
 
-    // Quick note modal
+    
     const [quickNoteLead, setQuickNoteLead] = useState<Lead | null>(null);
 
-    // Per-row stage updating
+    
     const [updatingStage, setUpdatingStage] = useState<string | null>(null);
 
-    // ─── Data Loading ──────────────────────────────────────────────────────────
+    
 
     const fetchLeads = useCallback(async (filters: Record<string, string> = {}) => {
         try {
@@ -205,7 +205,7 @@ const AdvancedLeadList: React.FC = () => {
         load();
     }, [fetchLeads]);
 
-    // ─── Selection Logic ───────────────────────────────────────────────────────
+    
 
     const allSelected = leads.length > 0 && selected.size === leads.length;
 
@@ -221,7 +221,7 @@ const AdvancedLeadList: React.FC = () => {
         });
     };
 
-    // ─── Filter Logic ──────────────────────────────────────────────────────────
+    
 
     const applyFilters = async () => {
         const clean: Record<string, string> = {};
@@ -240,7 +240,7 @@ const AdvancedLeadList: React.FC = () => {
         setSelected(new Set());
     };
 
-    // ─── Bulk Operations ───────────────────────────────────────────────────────
+    
 
     const executeBulk = async () => {
         if (!bulkAction || !bulkTarget || selected.size === 0) return;
@@ -277,7 +277,7 @@ const AdvancedLeadList: React.FC = () => {
         }
     };
 
-    // ─── Quick Stage Change ────────────────────────────────────────────────────
+    
 
     const handleQuickStageChange = async (leadId: string, newStage: string) => {
         setUpdatingStage(leadId);
@@ -291,7 +291,7 @@ const AdvancedLeadList: React.FC = () => {
         }
     };
 
-    // ─── Render Helpers ────────────────────────────────────────────────────────
+    
 
     const getStageColor = (statusId?: string): string => {
         const stage = stages.find((s) => s.name.toLowerCase() === statusId?.toLowerCase());
@@ -330,20 +330,20 @@ const AdvancedLeadList: React.FC = () => {
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />;
     };
 
-    // ─── JSX ──────────────────────────────────────────────────────────────────
+    
 
     return (
         <div className="flex h-full gap-0 relative">
-            {/* ── Quick Note Modal ── */}
+            {}
             {quickNoteLead && (
                 <QuickNoteModal
                     lead={quickNoteLead}
                     onClose={() => setQuickNoteLead(null)}
-                    onSaved={() => { }} // Can trigger a toast here if needed
+                    onSaved={() => { }} 
                 />
             )}
 
-            {/* ── Filter Sidebar ── */}
+            {}
             <aside className={`fixed lg:relative top-0 left-0 h-full z-40 bg-white border-r border-gray-100 shadow-xl lg:shadow-none transition-all duration-300
           ${sidebarOpen ? 'w-72 translate-x-0' : 'w-0 -translate-x-full lg:translate-x-0 lg:w-0 overflow-hidden'}`}>
                 {sidebarOpen && (
@@ -353,7 +353,7 @@ const AdvancedLeadList: React.FC = () => {
                             <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
                         </div>
 
-                        {/* Status filter */}
+                        {}
                         <div>
                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Status</label>
                             <select value={activeFilters['status_id'] ?? ''}
@@ -364,7 +364,7 @@ const AdvancedLeadList: React.FC = () => {
                             </select>
                         </div>
 
-                        {/* Dynamic filterable fields */}
+                        {}
                         {filterFields.map((field) => (
                             <div key={field.field_name}>
                                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
@@ -388,9 +388,9 @@ const AdvancedLeadList: React.FC = () => {
                 )}
             </aside>
 
-            {/* ── Main Content ── */}
+            {}
             <div className="flex-1 min-w-0 space-y-4">
-                {/* Toolbar */}
+                {}
                 <div className="flex items-center justify-between gap-3 flex-wrap">
                     <div className="flex items-center gap-3">
                         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Leads</h1>
@@ -418,7 +418,7 @@ const AdvancedLeadList: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Bulk Action Bar */}
+                {}
                 {selected.size > 0 && (
                     <div className="sticky top-4 z-30 bg-gray-900 text-white rounded-2xl px-5 py-3 flex items-center justify-between shadow-xl">
                         <span className="font-bold text-sm">{selected.size} lead{selected.size > 1 ? 's' : ''} selected</span>
@@ -430,7 +430,7 @@ const AdvancedLeadList: React.FC = () => {
                                 </button>
                             </RequireFeature>
 
-                            {/* Assign */}
+                            {}
                             <div className="flex items-center gap-1">
                                 <select
                                     value={bulkAction === 'assign' ? bulkTarget : ''}
@@ -442,7 +442,7 @@ const AdvancedLeadList: React.FC = () => {
                                 </select>
                             </div>
 
-                            {/* Change Stage */}
+                            {}
                             <div className="flex items-center gap-1">
                                 <select
                                     value={bulkAction === 'stage' ? bulkTarget : ''}
@@ -469,7 +469,7 @@ const AdvancedLeadList: React.FC = () => {
                     </div>
                 )}
 
-                {/* Lead Table */}
+                {}
                 {loading ? (
                     <div className="py-20 text-center text-gray-400 animate-pulse">Loading leads...</div>
                 ) : (
@@ -507,13 +507,13 @@ const AdvancedLeadList: React.FC = () => {
                                                 key={lead.id}
                                                 className={`hover:bg-blue-50/30 transition ${isSelected ? 'bg-blue-50 ring-1 ring-inset ring-blue-200' : ''}`}
                                             >
-                                                {/* Checkbox */}
+                                                {}
                                                 <td className="px-4 py-3">
                                                     <input type="checkbox" checked={isSelected} onChange={() => toggleOne(lead.id)}
                                                         className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                                                 </td>
 
-                                                {/* Name */}
+                                                {}
                                                 <td className="px-4 py-3">
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm flex-shrink-0">
@@ -528,13 +528,13 @@ const AdvancedLeadList: React.FC = () => {
                                                     </div>
                                                 </td>
 
-                                                {/* Email */}
+                                                {}
                                                 <td className="px-4 py-3 text-sm text-gray-600">{lead.email}</td>
 
-                                                {/* Phone */}
+                                                {}
                                                 <td className="px-4 py-3 text-sm text-gray-500">{lead.phone ?? '—'}</td>
 
-                                                {/* Status */}
+                                                {}
                                                 <td className="px-4 py-3">
                                                     {lead.status_id
                                                         ? <span className="px-2.5 py-0.5 rounded-full text-xs font-bold text-white" style={{ backgroundColor: stageColor }}>
@@ -543,18 +543,18 @@ const AdvancedLeadList: React.FC = () => {
                                                         : '—'}
                                                 </td>
 
-                                                {/* Country */}
+                                                {}
                                                 <td className="px-4 py-3 text-sm text-gray-500">{lead.country ?? '—'}</td>
 
-                                                {/* Assigned */}
+                                                {}
                                                 <td className="px-4 py-3 text-xs text-gray-400 font-mono">
                                                     {lead.assigned_to ? String(lead.assigned_to).slice(0, 8) + '…' : '—'}
                                                 </td>
 
-                                                {/* Quick Actions column */}
+                                                {}
                                                 <td className="px-4 py-3">
                                                     <div className="flex items-center gap-2">
-                                                        {/* Quick Stage Change */}
+                                                        {}
                                                         {stages.length > 0 && (
                                                             <div className="relative">
                                                                 {isChangingStage && (
@@ -576,7 +576,7 @@ const AdvancedLeadList: React.FC = () => {
                                                             </div>
                                                         )}
 
-                                                        {/* Quick Note button */}
+                                                        {}
                                                         <button
                                                             onClick={() => setQuickNoteLead(lead)}
                                                             title="Add a quick note"
@@ -584,7 +584,7 @@ const AdvancedLeadList: React.FC = () => {
                                                             📝
                                                         </button>
 
-                                                        {/* Go to profile */}
+                                                        {}
                                                         <button
                                                             onClick={() => navigate(`/crm/leads/${lead.id}`)}
                                                             title="Open lead profile"

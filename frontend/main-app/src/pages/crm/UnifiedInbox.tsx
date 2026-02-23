@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 interface EmailRecord {
     id: string;
@@ -27,7 +27,7 @@ interface ImapConfig {
 
 type FilterDirection = 'ALL' | 'INBOUND' | 'OUTBOUND';
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 
 const formatDate = (iso: string): string => {
     const d = new Date(iso);
@@ -49,7 +49,7 @@ const DIRECTION_BADGE: Record<EmailRecord['direction'], string> = {
     OUTBOUND: 'bg-purple-100 text-purple-700',
 };
 
-// ─── IMAP Settings Modal ──────────────────────────────────────────────────────
+
 
 interface ImapModalProps {
     onClose: () => void;
@@ -163,7 +163,7 @@ const ImapSettingsModal: React.FC<ImapModalProps> = ({ onClose }) => {
     );
 };
 
-// ─── Reply Compose Panel ─────────────────────────────────────────────────────
+
 
 interface ReplyPanelProps {
     email: EmailRecord;
@@ -180,7 +180,7 @@ const ReplyPanel: React.FC<ReplyPanelProps> = ({ email, onClose }) => {
         e.preventDefault();
         setSending(true);
         try {
-            // Hooks into existing LeadCommunicationController via email endpoint
+            
             await api.post(`/leads/${email.lead_id}/email`, { subject, body });
             setSent(true);
             setBody('');
@@ -223,7 +223,7 @@ const ReplyPanel: React.FC<ReplyPanelProps> = ({ email, onClose }) => {
     );
 };
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
+
 
 const UnifiedInbox: React.FC = () => {
     const navigate = useNavigate();
@@ -243,7 +243,7 @@ const UnifiedInbox: React.FC = () => {
             const res = await api.get(`/inbox/emails?${params.toString()}`);
             setEmails(res.data?.emails ?? []);
         } catch {
-            // Demo fallback
+            
             setEmails([
                 { id: '1', lead_id: 'l1', message_id: 'msg1', direction: 'INBOUND', subject: 'Regarding my visa enquiry', body: 'Dear team,\n\nI wanted to follow up on my application. Could you please provide an update?\n\nBest regards,\nAlice', received_at: new Date(Date.now() - 3600000).toISOString(), createdAt: new Date().toISOString(), lead_first_name: 'Alice', lead_last_name: 'Johnson', lead_email: 'alice@example.com' },
                 { id: '2', lead_id: 'l2', message_id: 'msg2', direction: 'OUTBOUND', subject: 'Welcome to our service', body: 'Hi Bob,\n\nThank you for reaching out. We are happy to assist you with your application.\n\nKind regards,\nThe Team', received_at: new Date(Date.now() - 86400000).toISOString(), createdAt: new Date().toISOString(), lead_first_name: 'Bob', lead_last_name: 'Smith', lead_email: 'bob@example.com' },
@@ -256,7 +256,7 @@ const UnifiedInbox: React.FC = () => {
 
     useEffect(() => { loadEmails(); }, [loadEmails]);
 
-    // Client-side search
+    
     const filtered = emails.filter((e) => {
         if (!search) return true;
         const q = search.toLowerCase();
@@ -270,10 +270,10 @@ const UnifiedInbox: React.FC = () => {
 
     return (
         <div className="flex flex-col h-full">
-            {/* IMAP Settings Modal */}
+            {}
             {showImapModal && <ImapSettingsModal onClose={() => setShowImapModal(false)} />}
 
-            {/* Toolbar */}
+            {}
             <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Unified Inbox</h1>
@@ -295,12 +295,12 @@ const UnifiedInbox: React.FC = () => {
                 </div>
             </div>
 
-            {/* Main pane */}
+            {}
             <div className="flex-1 flex gap-4 min-h-0 overflow-hidden">
 
-                {/* ── Left Pane: Email List ── */}
+                {}
                 <div className="w-full lg:w-96 flex-shrink-0 bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col overflow-hidden">
-                    {/* Search + Filter */}
+                    {}
                     <div className="p-3 border-b border-gray-100 space-y-2">
                         <input
                             type="text"
@@ -323,7 +323,7 @@ const UnifiedInbox: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* List */}
+                    {}
                     <div className="flex-1 overflow-y-auto divide-y divide-gray-50">
                         {loading ? (
                             [...Array(5)].map((_, i) => (
@@ -364,13 +364,13 @@ const UnifiedInbox: React.FC = () => {
                         })}
                     </div>
 
-                    {/* Footer count */}
+                    {}
                     <div className="px-4 py-2 border-t border-gray-100 text-xs text-gray-400 font-medium">
                         {filtered.length} email{filtered.length !== 1 ? 's' : ''}
                     </div>
                 </div>
 
-                {/* ── Right Pane: Email Detail ── */}
+                {}
                 <div className="hidden lg:flex flex-1 bg-white rounded-2xl border border-gray-100 shadow-sm flex-col overflow-hidden">
                     {!selected ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-center text-gray-400 space-y-3">
@@ -380,7 +380,7 @@ const UnifiedInbox: React.FC = () => {
                         </div>
                     ) : (
                         <div className="flex flex-col h-full overflow-hidden">
-                            {/* Email header */}
+                            {}
                             <div className="px-6 py-5 border-b border-gray-100 space-y-3">
                                 <div className="flex items-start justify-between gap-3">
                                     <h2 className="font-extrabold text-gray-900 text-xl leading-tight">{selected.subject}</h2>
@@ -414,7 +414,7 @@ const UnifiedInbox: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Body */}
+                            {}
                             <div className="flex-1 overflow-y-auto px-6 py-5">
                                 <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
                                     <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">
@@ -423,7 +423,7 @@ const UnifiedInbox: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Actions + Reply */}
+                            {}
                             <div className="px-6 py-4 border-t border-gray-100">
                                 {!showReply ? (
                                     <button

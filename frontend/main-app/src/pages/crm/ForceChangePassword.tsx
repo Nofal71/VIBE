@@ -35,12 +35,12 @@ const ForceChangePassword: React.FC = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-4 relative overflow-hidden">
-            {/* Background elements */}
+            {}
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none mix-blend-screen" />
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none mix-blend-screen" />
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
 
-            {/* Inner Content Component */}
+            {}
             <div className="relative z-10 w-full max-w-md bg-zinc-900/80 backdrop-blur-2xl border border-white/10 p-10 rounded-3xl shadow-2xl">
 
                 <div className="text-center mb-10">

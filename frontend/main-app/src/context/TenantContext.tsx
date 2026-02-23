@@ -51,7 +51,7 @@ export const TenantProvider: React.FC<{ children: ReactNode }> = ({ children }) 
                 });
             } catch (err) {
                 console.error('Failed to load Tenant Configuration Context', err);
-                // Safely fail open to default schema on load error assuming unseeded UI
+                
             } finally {
                 setLoading(false);
             }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 type Priority = 'INFO' | 'WARNING' | 'CRITICAL';
 
@@ -16,7 +16,7 @@ interface BroadcastResponse {
     results: BroadcastResult[];
 }
 
-// ─── Priority Config ──────────────────────────────────────────────────────────
+
 
 const PRIORITY_CONFIG: Record<Priority, { label: string; color: string; bg: string; icon: string }> = {
     INFO: { label: 'Info', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200', icon: 'ℹ️' },
@@ -24,7 +24,7 @@ const PRIORITY_CONFIG: Record<Priority, { label: string; color: string; bg: stri
     CRITICAL: { label: 'Critical', color: 'text-red-700', bg: 'bg-red-50 border-red-200', icon: '🚨' },
 };
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const SystemBroadcasts: React.FC = () => {
     const [form, setForm] = useState({ title: '', message: '', priority: 'INFO' as Priority });
@@ -77,7 +77,7 @@ const SystemBroadcasts: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-950 text-white p-8 space-y-8">
-            {/* Header */}
+            {}
             <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center text-2xl shadow-lg">
                     📣
@@ -92,7 +92,7 @@ const SystemBroadcasts: React.FC = () => {
 
             <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
 
-                {/* ── Compose Form ── */}
+                {}
                 <div className="xl:col-span-3 bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-800 flex items-center gap-3">
                         <span className="text-lg">✍️</span>
@@ -100,7 +100,7 @@ const SystemBroadcasts: React.FC = () => {
                     </div>
 
                     <form onSubmit={handleSend} className="p-6 space-y-5">
-                        {/* Priority Selector */}
+                        {}
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Priority Level</label>
                             <div className="flex gap-3">
@@ -125,7 +125,7 @@ const SystemBroadcasts: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Title */}
+                        {}
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Title (optional)</label>
                             <input
@@ -137,7 +137,7 @@ const SystemBroadcasts: React.FC = () => {
                             />
                         </div>
 
-                        {/* Message */}
+                        {}
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Message *</label>
                             <textarea
@@ -151,7 +151,7 @@ const SystemBroadcasts: React.FC = () => {
                             <p className="text-xs text-gray-500 mt-1 text-right">{form.message.length} characters</p>
                         </div>
 
-                        {/* Live Preview */}
+                        {}
                         {form.message.trim() && (
                             <div className={`rounded-xl border px-4 py-3 ${pc.bg}`}>
                                 <div className="flex items-center gap-2 mb-1">
@@ -187,7 +187,7 @@ const SystemBroadcasts: React.FC = () => {
                     </form>
                 </div>
 
-                {/* ── Info Panel ── */}
+                {}
                 <div className="xl:col-span-2 space-y-4">
                     <div className="bg-gray-900 rounded-2xl border border-gray-800 p-5 space-y-3">
                         <h3 className="font-extrabold text-white text-sm">⚡ How Broadcasts Work</h3>
@@ -199,7 +199,7 @@ const SystemBroadcasts: React.FC = () => {
                         </ul>
                     </div>
 
-                    {/* Priority Legend */}
+                    {}
                     <div className="bg-gray-900 rounded-2xl border border-gray-800 p-5 space-y-2">
                         <h3 className="font-extrabold text-white text-sm mb-3">Priority Guide</h3>
                         {(Object.entries(PRIORITY_CONFIG) as [Priority, typeof PRIORITY_CONFIG[Priority]][]).map(([key, cfg]) => (
@@ -219,7 +219,7 @@ const SystemBroadcasts: React.FC = () => {
                 </div>
             </div>
 
-            {/* ── Delivery Results ── */}
+            {}
             {response && showResults && (
                 <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">

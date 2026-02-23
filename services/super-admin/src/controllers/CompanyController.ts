@@ -2,13 +2,9 @@ import { Request, Response } from 'express';
 import { Sequelize, QueryTypes } from 'sequelize';
 import { Company, Plan, Domain, DepartmentBlueprint } from '../models';
 
-// ─── Ephemeral Tenant Connection ──────────────────────────────────────────────
 
-/**
- * Opens a short-lived Sequelize connection to the given tenant DB,
- * runs the provided callback, then unconditionally closes the connection.
- * This avoids leaking connections during metrics tunnelling.
- */
+
+
 async function withTenantConnection<T>(
     dbName: string,
     fn: (seq: Sequelize) => Promise<T>
@@ -29,7 +25,7 @@ async function withTenantConnection<T>(
     }
 }
 
-// ─── Table existence guard ────────────────────────────────────────────────────
+
 
 async function tableExists(seq: Sequelize, tableName: string, dbName: string): Promise<boolean> {
     const rows = await seq.query<{ TABLE_NAME: string }>(
@@ -40,14 +36,11 @@ async function tableExists(seq: Sequelize, tableName: string, dbName: string): P
     return rows.length > 0;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 export class CompanyController {
 
-    /**
-     * GET /api/companies
-     * Returns all Company records with associated Plan, Domain[], and DepartmentBlueprint.
-     */
+    
     static async getCompanies(req: Request, res: Response): Promise<void> {
         try {
             const companies = await Company.findAll({
@@ -67,18 +60,12 @@ export class CompanyController {
         }
     }
 
-    /**
-     * GET /api/companies/:id/metrics
-     * Tunnels into the tenant's own database and collects live metrics:
-     *  - total_leads      (count from `leads` table)
-     *  - total_users      (count from `users` table)
-     *  - storage_bytes    (sum of size_bytes from `file_records` table, or 0 if missing)
-     */
+    
     static async getCompanyMetrics(req: Request, res: Response): Promise<void> {
         const { id } = req.params as { id: string };
 
         try {
-            // 1. Resolve db_name from Master DB
+            
             const company = await Company.findByPk(id, {
                 include: [
                     { model: Plan, as: 'plan', attributes: ['id', 'name', 'max_leads', 'storage_limit_mb'] },
@@ -94,10 +81,10 @@ export class CompanyController {
 
             const { db_name } = company;
 
-            // 2. Tunnel into tenant DB for live metrics
+            
             const metrics = await withTenantConnection(db_name, async (seq) => {
 
-                // ── Total Leads ──────────────────────────────────────────────
+                
                 let total_leads = 0;
                 if (await tableExists(seq, 'leads', db_name)) {
                     const leadsResult = await seq.query<{ cnt: string }>(
@@ -107,7 +94,7 @@ export class CompanyController {
                     total_leads = parseInt(leadsResult[0]?.cnt ?? '0', 10);
                 }
 
-                // ── Total Users ──────────────────────────────────────────────
+                
                 let total_users = 0;
                 if (await tableExists(seq, 'users', db_name)) {
                     const usersResult = await seq.query<{ cnt: string }>(
@@ -117,7 +104,7 @@ export class CompanyController {
                     total_users = parseInt(usersResult[0]?.cnt ?? '0', 10);
                 }
 
-                // ── Storage (file_records) ───────────────────────────────────
+                
                 let storage_bytes = 0;
                 if (await tableExists(seq, 'file_records', db_name)) {
                     const storageResult = await seq.query<{ total: string | null }>(
@@ -141,7 +128,7 @@ export class CompanyController {
         } catch (error) {
             const msg = error instanceof Error ? error.message : String(error);
             console.error('[CompanyController] getCompanyMetrics failed:', msg);
-            // Return partial data even on tunnel failure so the UI degrades gracefully
+            
             res.status(502).json({
                 error: `Failed to tunnel into tenant database: ${msg}`,
                 metrics: { total_leads: 0, total_users: 0, storage_bytes: 0, storage_mb: 0 },
@@ -149,11 +136,7 @@ export class CompanyController {
         }
     }
 
-    /**
-     * PATCH /api/companies/:id/status
-     * Body: { status: 'active' | 'suspended' }
-     * If body is empty it toggles the current status automatically.
-     */
+    
     static async updateCompanyStatus(req: Request, res: Response): Promise<void> {
         const { id } = req.params as { id: string };
 
@@ -173,7 +156,7 @@ export class CompanyController {
             if (requestedStatus && VALID.includes(requestedStatus)) {
                 newStatus = requestedStatus;
             } else {
-                // Auto-toggle
+                
                 newStatus = company.status === 'active' ? 'suspended' : 'active';
             }
 

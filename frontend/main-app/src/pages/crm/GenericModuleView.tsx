@@ -11,16 +11,16 @@ const GenericModuleView: React.FC = () => {
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
-        // Reset state on parametric navigations
+        
         setDataList([]);
         setSchema(null);
 
-        // Fetch schema specifically mapped against dynamic tables inside industry blueprints
+        
         api.get(`/tenant/schema/${tableName}`)
             .then(res => setSchema({ columns: res.data.columns || [] }))
             .catch(err => {
                 console.error(`Failed schema fetch for ${tableName}`, err);
-                // Fallback for visual checks mapping dynamically over param injections
+                
                 setSchema({
                     columns: [
                         { name: 'address_identifier', type: 'STRING', required: true },
@@ -44,7 +44,7 @@ const GenericModuleView: React.FC = () => {
             setShowForm(false);
         } catch (err) {
             console.error(`Error saving dynamically to ${tableName}`, err);
-            // Optimistic layout appending
+            
             setDataList([...dataList, data]);
             setShowForm(false);
         }

@@ -4,7 +4,7 @@ import { Company } from '../models/Company';
 import { sequelize as masterSequelize } from '../config/database';
 import { Sequelize } from 'sequelize';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 type BroadcastPriority = 'INFO' | 'WARNING' | 'CRITICAL';
 
@@ -21,7 +21,7 @@ interface CompanyRecord {
     status: 'active' | 'suspended';
 }
 
-// ─── Tenant connection pool (lightweight — separate from TCM in crm-core) ─────
+
 
 const tenantConnectionCache = new Map<string, Sequelize>();
 
@@ -48,18 +48,11 @@ async function getTenantConnection(dbName: string): Promise<Sequelize> {
     return seq;
 }
 
-// ─── Controller ───────────────────────────────────────────────────────────────
+
 
 export class BroadcastController {
 
-    /**
-     * POST /api/broadcasts/send
-     * Super Admin only — inserts a Notification record into every active
-     * tenant database. user_id and role_id are NULL, which signals the
-     * frontend notification system that this is a global/broadcast message.
-     *
-     * Body: { message: string, title?: string, priority?: 'INFO'|'WARNING'|'CRITICAL' }
-     */
+    
     static async sendGlobalBroadcast(req: Request, res: Response): Promise<void> {
         try {
             const { message, title, priority = 'INFO' } = req.body as BroadcastBody;
@@ -75,7 +68,7 @@ export class BroadcastController {
                 return;
             }
 
-            // 1. Fetch all ACTIVE companies from Master DB
+            
             const companies = await masterSequelize.query<CompanyRecord>(
                 `SELECT id, name, db_name, status FROM \`companies\` WHERE status = 'active'`,
                 { type: QueryTypes.SELECT }
@@ -90,12 +83,12 @@ export class BroadcastController {
 
             const results: { tenant: string; success: boolean; error?: string }[] = [];
 
-            // 2. Iterate each tenant safely — failures are isolated per tenant
+            
             for (const company of companies) {
                 try {
                     const seq = await getTenantConnection(company.db_name);
 
-                    // Ensure notifications table exists (safe on fresh tenants)
+                    
                     await seq.query(
                         `CREATE TABLE IF NOT EXISTS \`notifications\` (
                             id          VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
@@ -112,7 +105,7 @@ export class BroadcastController {
                         { type: QueryTypes.RAW }
                     );
 
-                    // Insert the broadcast record
+                    
                     await seq.query(
                         `INSERT INTO \`notifications\`
                             (user_id, role_id, title, message, priority, source)

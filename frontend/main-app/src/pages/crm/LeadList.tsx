@@ -8,7 +8,7 @@ interface Lead {
     first_name: string;
     last_name: string;
     email: string;
-    status_id: string; // Used as explicit stage in schema mapping
+    status_id: string; 
 }
 
 const LeadList: React.FC = () => {
@@ -18,7 +18,7 @@ const LeadList: React.FC = () => {
 
     const stageOptions = stages.map(s => s.name);
 
-    // Dynamic layout schema for Leads table using stage context
+    
     const leadSchema: SchemaJson = {
         columns: [
             { name: 'first_name', type: 'STRING', required: true },
@@ -29,12 +29,12 @@ const LeadList: React.FC = () => {
     };
 
     useEffect(() => {
-        // In actual implementation, point this to API Gateway specifically mapping port 4001 CRM-Core
+        
         api.get('/core/leads')
             .then(res => setLeads(res.data.leads || []))
             .catch(err => {
                 console.error('Failed to fetch leads', err);
-                // Fallback for visual rendering prior to actual backend seeders finalizing
+                
                 setLeads([
                     { id: '1', first_name: 'John', last_name: 'Doe', email: 'john@example.com', status_id: stageOptions[0] || 'New' },
                     { id: '2', first_name: 'Jane', last_name: 'Smith', email: 'jane@example.com', status_id: stageOptions[1] || 'Contacted' },
@@ -51,7 +51,7 @@ const LeadList: React.FC = () => {
             setShowForm(false);
         } catch (err) {
             console.error('Failed to create lead', err);
-            // Optimistic update for presentation context
+            
             setLeads([...leads, { ...data, id: String(Date.now()) } as Lead]);
             setShowForm(false);
         }

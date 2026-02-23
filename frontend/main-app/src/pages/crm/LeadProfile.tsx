@@ -4,7 +4,7 @@ import api from '../../api/axiosConfig';
 import { usePermissions } from '../../context/PermissionContext';
 import RequireFeature from '../../components/RequireFeature';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
 
 interface Lead {
     id: string;
@@ -63,7 +63,7 @@ interface EmailTemplate {
 
 type ActiveTab = 'timeline' | 'email' | 'tasks' | 'notes' | 'documents';
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 
 const formatValue = (val: unknown): string => {
     if (val === null || val === undefined) return '—';
@@ -77,10 +77,7 @@ const formatFileSize = (bytes: number): string => {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 };
 
-/**
- * Replace all {{variable}} tokens in a string with lead field values.
- * Falls back to keeping the token unchanged if no matching field.
- */
+
 const interpolate = (text: string, lead: Lead): string => {
     return text.replace(/\{\{([a-zA-Z0-9_]+)\}\}/g, (_, key) => {
         const val = lead[key];
@@ -102,7 +99,7 @@ const VISIBILITY_OPTS = [
     { value: 'ADMIN_ONLY', label: '👑 Admin Only', desc: 'Visible to admins' },
 ] as const;
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const LeadProfile: React.FC = () => {
     const { id: leadId } = useParams<{ id: string }>();
@@ -114,35 +111,35 @@ const LeadProfile: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<ActiveTab>('timeline');
 
-    // Timeline
+    
     const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
     const [timelineLoading, setTimelineLoading] = useState(false);
 
-    // Email compose
+    
     const [templates, setTemplates] = useState<EmailTemplate[]>([]);
     const [selectedTemplateId, setSelectedTemplateId] = useState('');
     const [emailForm, setEmailForm] = useState({ subject: '', body: '' });
     const [emailSending, setEmailSending] = useState(false);
     const [emailSuccess, setEmailSuccess] = useState(false);
 
-    // Tasks
+    
     const [tasks, setTasks] = useState<Task[]>([]);
     const [tasksLoading, setTasksLoading] = useState(false);
 
-    // Notes
+    
     const [notes, setNotes] = useState<Note[]>([]);
     const [notesLoading, setNotesLoading] = useState(false);
     const [noteForm, setNoteForm] = useState({ content: '', visibility: 'PUBLIC' as Note['visibility'] });
     const [noteSaving, setNoteSaving] = useState(false);
     const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
 
-    // Documents
+    
     const [files, setFiles] = useState<FileRecord[]>([]);
     const [filesLoading, setFilesLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
 
-    // ─── Load Lead ─────────────────────────────────────────────────────────────
+    
 
     useEffect(() => {
         if (!leadId) return;
@@ -157,14 +154,14 @@ const LeadProfile: React.FC = () => {
             .finally(() => setLoading(false));
     }, [leadId]);
 
-    // Load email templates once
+    
     useEffect(() => {
         api.get('/templates')
             .then((r) => setTemplates(r.data?.templates ?? []))
             .catch(() => { });
     }, []);
 
-    // ─── Load Tab Data ─────────────────────────────────────────────────────────
+    
 
     useEffect(() => {
         if (!leadId) return;
@@ -213,7 +210,7 @@ const LeadProfile: React.FC = () => {
         }
     };
 
-    // ─── Email Template Application ────────────────────────────────────────────
+    
 
     const applyTemplate = (templateId: string) => {
         const t = templates.find((t) => t.id === templateId);
@@ -225,7 +222,7 @@ const LeadProfile: React.FC = () => {
         setSelectedTemplateId(templateId);
     };
 
-    // ─── Send Email ─────────────────────────────────────────────────────────────
+    
 
     const handleSendEmail = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -244,7 +241,7 @@ const LeadProfile: React.FC = () => {
         }
     };
 
-    // ─── Notes ─────────────────────────────────────────────────────────────────
+    
 
     const submitNote = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -277,7 +274,7 @@ const LeadProfile: React.FC = () => {
         setNoteForm({ content: note.content, visibility: note.visibility });
     };
 
-    // ─── Files ─────────────────────────────────────────────────────────────────
+    
 
     const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -287,7 +284,7 @@ const LeadProfile: React.FC = () => {
         const formData = new FormData();
         formData.append('document', file);
         formData.append('lead_id', leadId);
-        formData.append('uploaded_by', 'current-user-id'); // Replaced by real auth in prod
+        formData.append('uploaded_by', 'current-user-id'); 
         try {
             await api.post('/files/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
@@ -308,7 +305,7 @@ const LeadProfile: React.FC = () => {
         setFiles((prev) => prev.filter((f) => f.id !== id));
     };
 
-    // ─── Render ───────────────────────────────────────────────────────────────
+    
 
     if (loading) {
         return <div className="py-24 text-center text-gray-400 animate-pulse">Loading lead profile...</div>;
@@ -345,14 +342,14 @@ const LeadProfile: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {/* Breadcrumb */}
+            {}
             <div className="flex items-center gap-2 text-sm text-gray-400">
                 <button onClick={() => navigate('/crm/leads')} className="hover:text-blue-600 transition font-medium">Leads</button>
                 <span>/</span>
                 <span className="text-gray-700 font-semibold">{displayName}</span>
             </div>
 
-            {/* Profile Header */}
+            {}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-6">
                 <div className="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600 font-extrabold text-2xl flex-shrink-0 shadow-inner">
                     {initials}
@@ -366,9 +363,9 @@ const LeadProfile: React.FC = () => {
                 )}
             </div>
 
-            {/* Two-Column Body */}
+            {}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                {/* ── Left: Details ── */}
+                {}
                 <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden self-start">
                     <div className="px-5 py-4 border-b border-gray-100">
                         <h2 className="font-extrabold text-gray-800 text-sm uppercase tracking-widest">Lead Details</h2>
@@ -385,9 +382,9 @@ const LeadProfile: React.FC = () => {
                     </dl>
                 </div>
 
-                {/* ── Right: Tabbed ── */}
+                {}
                 <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    {/* Tab Bar */}
+                    {}
                     <div className="flex border-b border-gray-100 overflow-x-auto">
                         {TABS.map((tab) => (
                             <button
@@ -404,7 +401,7 @@ const LeadProfile: React.FC = () => {
 
                     <div className="p-5">
 
-                        {/* ── Tab: Timeline ── */}
+                        {}
                         {activeTab === 'timeline' && (
                             timelineLoading
                                 ? <div className="py-10 text-center text-gray-400 animate-pulse text-sm">Loading activity...</div>
@@ -426,7 +423,7 @@ const LeadProfile: React.FC = () => {
                                     </div>
                         )}
 
-                        {/* ── Tab: Email ── */}
+                        {}
                         {activeTab === 'email' && (
                             <RequireFeature
                                 feature="SEND_EMAIL"
@@ -442,7 +439,7 @@ const LeadProfile: React.FC = () => {
                                         Sending to: <span className="font-semibold text-gray-700">{lead.email ?? 'No email on file'}</span>
                                     </p>
 
-                                    {/* Template selector */}
+                                    {}
                                     {templates.length > 0 && (
                                         <div>
                                             <label className="block text-sm font-bold text-gray-700 mb-1">Use a Template</label>
@@ -494,7 +491,7 @@ const LeadProfile: React.FC = () => {
                             </RequireFeature>
                         )}
 
-                        {/* ── Tab: Tasks ── */}
+                        {}
                         {activeTab === 'tasks' && (
                             tasksLoading
                                 ? <div className="py-10 text-center text-gray-400 animate-pulse text-sm">Loading tasks...</div>
@@ -515,10 +512,10 @@ const LeadProfile: React.FC = () => {
                                     </div>
                         )}
 
-                        {/* ── Tab: Notes ── */}
+                        {}
                         {activeTab === 'notes' && (
                             <div className="space-y-5">
-                                {/* Note compose form */}
+                                {}
                                 <form onSubmit={submitNote} className="space-y-3">
                                     <textarea
                                         rows={3} value={noteForm.content} required
@@ -549,7 +546,7 @@ const LeadProfile: React.FC = () => {
                                     </div>
                                 </form>
 
-                                {/* Notes list */}
+                                {}
                                 {notesLoading
                                     ? <div className="py-6 text-center text-gray-400 animate-pulse text-sm">Loading notes...</div>
                                     : notes.length === 0
@@ -585,10 +582,10 @@ const LeadProfile: React.FC = () => {
                             </div>
                         )}
 
-                        {/* ── Tab: Documents ── */}
+                        {}
                         {activeTab === 'documents' && (
                             <div className="space-y-5">
-                                {/* Upload area */}
+                                {}
                                 <div
                                     className="border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center cursor-pointer hover:border-blue-300 hover:bg-blue-50/30 transition"
                                     onClick={() => fileInputRef.current?.click()}
@@ -610,7 +607,7 @@ const LeadProfile: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* File list */}
+                                {}
                                 {filesLoading
                                     ? <div className="py-6 text-center text-gray-400 animate-pulse text-sm">Loading files...</div>
                                     : files.length === 0

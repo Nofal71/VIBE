@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 interface DomainRecord {
     domain_name: string;
@@ -38,7 +38,7 @@ interface Metrics {
     storage_mb: number;
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 
 import api from '../../api/axiosConfig';
 
@@ -54,7 +54,7 @@ const formatBytes = (bytes: number): string => {
     return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${units[i]}`;
 };
 
-// ─── KPI Card ─────────────────────────────────────────────────────────────────
+
 
 interface KpiCardProps {
     icon: string;
@@ -62,14 +62,14 @@ interface KpiCardProps {
     value: string;
     sub?: string;
     limit?: string;
-    pct?: number;           // 0-100 for progress bar
-    colorClass: string;     // Tailwind gradient
+    pct?: number;           
+    colorClass: string;     
     loading?: boolean;
 }
 
 const KpiCard: React.FC<KpiCardProps> = ({ icon, label, value, sub, limit, pct, colorClass, loading }) => (
     <div className={`relative overflow-hidden rounded-2xl border border-white/5 bg-gray-900 p-5`}>
-        {/* Accent strip */}
+        {}
         <div className={`absolute top-0 left-0 right-0 h-1 ${colorClass}`} />
 
         {loading ? (
@@ -99,7 +99,7 @@ const KpiCard: React.FC<KpiCardProps> = ({ icon, label, value, sub, limit, pct, 
     </div>
 );
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const CompanyDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -125,11 +125,11 @@ const CompanyDetail: React.FC = () => {
 
             setCompany(data.company as CompanyRecord);
             setMetrics(data.metrics as Metrics);
-            // Use partial data if available
+            
             if (data.metrics) setMetrics(data.metrics as Metrics);
         } catch (err: any) {
             setError(err instanceof Error ? err.message : 'Network error.');
-            // Demo fallback
+            
             const demoCompany: CompanyRecord = {
                 id: id!, name: 'Elite Real Estate', db_name: 'crm_elite_re', status: 'active',
                 createdAt: new Date(Date.now() - 7 * 86400000).toISOString(),
@@ -147,7 +147,7 @@ const CompanyDetail: React.FC = () => {
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
-    // ── Status Toggle ─────────────────────────────────────────────────────────
+    
 
     const handleStatusToggle = async () => {
         if (!company || toggling) return;
@@ -184,13 +184,13 @@ const CompanyDetail: React.FC = () => {
 
     const isSuspended = company?.status === 'suspended';
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  RENDER
-    // ─────────────────────────────────────────────────────────────────────────
+    
+    
+    
 
     return (
         <div className="space-y-6">
-            {/* Back button */}
+            {}
             <button
                 onClick={() => navigate('/super-admin/companies')}
                 className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-white transition font-semibold"
@@ -198,7 +198,7 @@ const CompanyDetail: React.FC = () => {
                 ← Back to Company Directory
             </button>
 
-            {/* Status messages */}
+            {}
             {error && (
                 <div className="bg-amber-900/30 border border-amber-800 text-amber-300 text-sm font-semibold rounded-xl px-4 py-3">
                     ⚠ {error}
@@ -210,11 +210,11 @@ const CompanyDetail: React.FC = () => {
                 </div>
             )}
 
-            {/* ── Header Card ── */}
+            {}
             <div className={`relative overflow-hidden rounded-2xl border bg-gray-900 p-6
         ${isSuspended ? 'border-red-800/50' : 'border-white/5'}`}>
 
-                {/* Suspended overlay strip */}
+                {}
                 {isSuspended && (
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 to-orange-600" />
                 )}
@@ -223,7 +223,7 @@ const CompanyDetail: React.FC = () => {
                 )}
 
                 <div className="flex items-start justify-between gap-6 flex-wrap">
-                    {/* Identity */}
+                    {}
                     <div className="flex items-center gap-4">
                         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-extrabold shadow-lg
               ${isSuspended ? 'bg-red-900/50' : 'bg-indigo-900/50'}`}>
@@ -261,7 +261,7 @@ const CompanyDetail: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Actions */}
+                    {}
                     <div className="flex gap-3 items-start flex-wrap">
                         <button
                             onClick={fetchData}
@@ -292,7 +292,7 @@ const CompanyDetail: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Meta row */}
+                {}
                 {!loadingMain && company && (
                     <div className="mt-5 pt-4 border-t border-white/5 flex items-center gap-6 flex-wrap text-xs text-gray-500">
                         <span>📅 Provisioned: <strong className="text-gray-400">{formatDate(company.createdAt)}</strong></span>
@@ -302,7 +302,7 @@ const CompanyDetail: React.FC = () => {
                 )}
             </div>
 
-            {/* ── KPI Cards ── */}
+            {}
             <div>
                 <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-widest mb-3">📊 Live Tenant Metrics</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -344,7 +344,7 @@ const CompanyDetail: React.FC = () => {
                     />
                 </div>
 
-                {/* Usage warnings */}
+                {}
                 {!loadingMetrics && metrics && (
                     <>
                         {leadPct >= 90 && (
@@ -361,7 +361,7 @@ const CompanyDetail: React.FC = () => {
                 )}
             </div>
 
-            {/* ── Plan Details ── */}
+            {}
             {!loadingMain && company?.plan && (
                 <div className="bg-gray-900 rounded-2xl border border-gray-800 p-5">
                     <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-widest mb-4">📦 Plan Details</h2>
@@ -381,7 +381,7 @@ const CompanyDetail: React.FC = () => {
                 </div>
             )}
 
-            {/* ── Domain Records ── */}
+            {}
             {!loadingMain && company?.domains && company.domains.length > 0 && (
                 <div className="bg-gray-900 rounded-2xl border border-gray-800 p-5">
                     <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-widest mb-4">🌐 Domain Records</h2>

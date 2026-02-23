@@ -93,7 +93,7 @@ const InvoiceManager: React.FC = () => {
                 </button>
             </div>
 
-            {/* Summary Cards */}
+            {}
             <div className="grid grid-cols-3 gap-4">
                 {[
                     { label: 'Draft', value: totals.draft, color: 'border-gray-200 bg-gray-50' },

@@ -66,7 +66,7 @@ const RequireMasterAuth: React.FC<RequireMasterAuthProps> = ({ children }) => {
         );
     }
 
-    // Only render children if strictly valid
+    
     if (isValid === true) {
         return <>{children}</>;
     }

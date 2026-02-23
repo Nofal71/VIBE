@@ -112,7 +112,7 @@ const StageBuilder: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Stage List */}
+                {}
                 <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100">
                         <h2 className="font-extrabold text-gray-800">Pipeline Stages ({stages.length})</h2>
@@ -126,7 +126,7 @@ const StageBuilder: React.FC = () => {
                         <div className="divide-y divide-gray-50">
                             {stages.map((stage, idx) => (
                                 <div key={idx} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50/80 transition group">
-                                    {/* Color swatch + picker */}
+                                    {}
                                     <div className="relative flex-shrink-0">
                                         <div
                                             className="w-8 h-8 rounded-lg cursor-pointer border-2 border-white shadow-md hover:scale-110 transition"
@@ -140,17 +140,17 @@ const StageBuilder: React.FC = () => {
                                         />
                                     </div>
 
-                                    {/* Stage name (inline editable) */}
+                                    {}
                                     <input
                                         value={stage.name}
                                         onChange={(e) => updateName(idx, e.target.value)}
                                         className="flex-1 bg-transparent text-sm font-semibold text-gray-800 border-b border-transparent hover:border-gray-300 focus:border-blue-400 outline-none py-0.5 transition"
                                     />
 
-                                    {/* Order badge */}
+                                    {}
                                     <span className="text-xs text-gray-400 font-mono w-6 text-center">{idx + 1}</span>
 
-                                    {/* Reorder controls */}
+                                    {}
                                     <div className="flex gap-1">
                                         <button
                                             onClick={() => moveUp(idx)} disabled={idx === 0}
@@ -164,7 +164,7 @@ const StageBuilder: React.FC = () => {
                                         >▼</button>
                                     </div>
 
-                                    {/* Delete */}
+                                    {}
                                     <button
                                         onClick={() => removeStage(idx)}
                                         className="p-1 rounded text-red-300 hover:text-red-600 hover:bg-red-50 transition opacity-0 group-hover:opacity-100"
@@ -178,7 +178,7 @@ const StageBuilder: React.FC = () => {
                     )}
                 </div>
 
-                {/* Add Stage Panel */}
+                {}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5 self-start">
                     <h2 className="font-extrabold text-gray-800">Add New Stage</h2>
 
@@ -207,7 +207,7 @@ const StageBuilder: React.FC = () => {
                                 />
                             ))}
                         </div>
-                        {/* Preview */}
+                        {}
                         <div className="mt-3 flex items-center gap-2">
                             <div className="w-4 h-4 rounded-full" style={{ backgroundColor: newStageColor }} />
                             <span className="text-sm font-semibold text-gray-700">{newStageName || 'Preview'}</span>

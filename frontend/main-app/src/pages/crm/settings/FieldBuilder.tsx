@@ -76,7 +76,7 @@ const FieldBuilder: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                {/* Form Card */}
+                {}
                 <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5 self-start">
                     <h2 className="font-extrabold text-gray-800 text-lg">Add New Field</h2>
 
@@ -133,7 +133,7 @@ const FieldBuilder: React.FC = () => {
                         />
                     </div>
 
-                    {/* Toggle Options */}
+                    {}
                     <div className="space-y-3 pt-2 border-t border-gray-100">
                         {[
                             { key: 'is_compulsory' as const, label: 'Make Compulsory', desc: 'Form will require this field' },
@@ -168,7 +168,7 @@ const FieldBuilder: React.FC = () => {
                     </button>
                 </form>
 
-                {/* Existing Fields Table */}
+                {}
                 <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden self-start">
                     <div className="px-6 py-4 border-b border-gray-100">
                         <h2 className="font-extrabold text-gray-800">Deployed Fields ({fields.length})</h2>

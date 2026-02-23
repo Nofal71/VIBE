@@ -11,8 +11,8 @@ const TenantLogin: React.FC = () => {
 
     useEffect(() => {
         if (CURRENT_TENANT_ID === 'public') {
-            // If they hit /login on the main domain, redirect them to main landing
-            // or show a message that they need to use their company subdomain.
+            
+            
         }
     }, []);
 
@@ -21,12 +21,12 @@ const TenantLogin: React.FC = () => {
         setLoading(true);
         setError(null);
         try {
-            // Login is global at IAM service
+            
             const res = await api.post('/auth/login', { email, password });
             const token = res.data.token;
             if (token) {
                 localStorage.setItem('jwt_token', token);
-                // Redirect to CRM dashboard
+                
                 navigate('/crm/dashboard');
             } else {
                 setError('Login failed: Invalid response from server');

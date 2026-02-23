@@ -43,7 +43,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         return <Navigate to="/login" replace />;
     }
 
-    // First-Time Login Password Reset Logic
+    
     if (user.requires_password_change === true && location.pathname !== '/crm/change-password') {
         return <Navigate to="/crm/change-password" replace />;
     }

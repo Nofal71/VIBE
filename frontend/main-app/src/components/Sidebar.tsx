@@ -11,9 +11,9 @@ export const Sidebar: React.FC = () => {
   const borderColor = isLight ? 'border-gray-200' : 'border-gray-700';
   const headingColor = isLight ? 'text-gray-500' : 'text-gray-400';
 
-  // Hover & Active States mapping to primary color
-  // Since we can't use arbitrary arbitrary Tailwind classes dynamically safely without runtime compiler,
-  // we can use inline styles for the strict primary color requirements, and standard utility classes for structure.
+  
+  
+  
 
   const tables = schemaJson.tables || [];
   const industryModules = tables.map((t: any) => ({ name: t.name, url: `/crm/modules/${t.name}` }));

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 interface GeminiContent {
     parts: { text: string }[];
@@ -29,7 +29,7 @@ interface BlueprintPayload {
     default_stages_json: { name: string; color: string }[];
 }
 
-// ─── System prompt sent to Gemini ─────────────────────────────────────────────
+
 
 const SYSTEM_INSTRUCTION = `You are an Enterprise CRM Architect. The user will provide an industry or business type. You must return ONLY a raw JSON object — no markdown, no backticks, no explanation, no code fences. The JSON object must match this exact structure:
 
@@ -63,15 +63,11 @@ const SYSTEM_INSTRUCTION = `You are an Enterprise CRM Architect. The user will p
 
 Generate 3-5 relevant tables with 4-8 meaningful columns per table. Column types must be one of: STRING, NUMBER, BOOLEAN, ENUM. Return ONLY the JSON, nothing else.`;
 
-// ─── Controller ───────────────────────────────────────────────────────────────
+
 
 export class AIGeneratorController {
 
-    /**
-     * POST /api/ai/generate-blueprint
-     * Body: { prompt: string }
-     * Calls Gemini 2.5 Flash to generate a CRM Blueprint JSON for the given industry.
-     */
+    
     static async generateBlueprint(req: Request, res: Response): Promise<void> {
         const { prompt } = req.body as { prompt?: string };
 
@@ -134,7 +130,7 @@ export class AIGeneratorController {
             return;
         }
 
-        // ── Extract raw text from candidates ──────────────────────────────────
+        
 
         if (geminiResponse.error) {
             console.error('[AIGeneratorController] Gemini returned an error:', geminiResponse.error);
@@ -149,12 +145,12 @@ export class AIGeneratorController {
             return;
         }
 
-        // ── Parse + validate the JSON ──────────────────────────────────────────
+        
 
         let blueprint: BlueprintPayload;
 
         try {
-            // Strip any accidental markdown code fences (safety net even with responseMimeType)
+            
             const cleaned = rawText
                 .replace(/^```(?:json)?\s*/i, '')
                 .replace(/\s*```$/i, '')
@@ -165,12 +161,12 @@ export class AIGeneratorController {
             console.error('[AIGeneratorController] Failed to parse Gemini JSON:', rawText);
             res.status(502).json({
                 error: 'Gemini returned malformed JSON. Please retry or refine your prompt.',
-                raw: rawText.slice(0, 500), // partial for debugging
+                raw: rawText.slice(0, 500), 
             });
             return;
         }
 
-        // ── Validate required top-level keys ──────────────────────────────────
+        
 
         const required: (keyof BlueprintPayload)[] = [
             'name', 'schema_json', 'default_roles_json', 'ui_config_json', 'default_stages_json',

@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Company, Domain, DepartmentBlueprint } from '../models';
 import { DatabaseEngine } from '../services/DatabaseEngine';
 import { TenantSeeder } from '../services/TenantSeeder';
-import { DockerOrchestrator } from '../services/DockerOrchestrator';
 
 export class ProvisioningController {
     static async createCompany(req: Request, res: Response): Promise<void> {
@@ -26,7 +25,7 @@ export class ProvisioningController {
             await DatabaseEngine.createTenantDatabase(db_name);
             await DatabaseEngine.generateDynamicSchema(db_name, blueprint.schema_json);
 
-            // Generate credentials
+            
             const adminEmail = 'admin@' + domain;
             const tempPassword = Math.random().toString(36).slice(-8) + 'A1!';
 
@@ -38,11 +37,8 @@ export class ProvisioningController {
                 status: 'active',
             });
 
-            // Phase 14: Automated Tenant User Seeding execution
+            
             await TenantSeeder.seedTenantBasics(db_name, blueprint, adminEmail, tempPassword, newCompany.id);
-
-            // Phase 15: Automated Infrastructure Orchestration
-            await DockerOrchestrator.provisionTenantInfrastructure(domain, db_name);
 
             await Domain.create({
                 company_id: newCompany.id,

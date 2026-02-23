@@ -11,7 +11,7 @@ export class TenantConfigController {
                 return;
             }
 
-            // Query Master DB
+            
             const company = await Company.findOne({
                 where: { db_name: tenantId },
                 include: [
@@ -37,7 +37,7 @@ export class TenantConfigController {
             res.status(200).json({
                 tenant_id: company.db_name,
                 company_name: company.name,
-                schema_json: department?.schema_json || { tables: [] }, // Provide tables for Sidebar mapping
+                schema_json: department?.schema_json || { tables: [] }, 
                 permissions: department?.default_roles_json || {},
                 ui_config_json: department?.ui_config_json || {},
                 default_stages_json: department?.default_stages_json || [],

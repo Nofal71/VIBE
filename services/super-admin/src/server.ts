@@ -1,7 +1,7 @@
 import app from './app';
 import { sequelize, connectDatabase } from './config/database';
 import { runInitialSeed } from './seeders/initialSeed';
-import './models'; // Ensure models are loaded for sync
+import './models'; 
 
 const PORT = process.env.PORT || 4000;
 
@@ -11,7 +11,7 @@ const startServer = async () => {
         await sequelize.sync({ alter: true });
         console.log('Master database synced successfully.');
 
-        // Phase 9: Database Seeding check
+        
         if (process.env.RUN_SEED === 'true') {
             await runInitialSeed();
         }

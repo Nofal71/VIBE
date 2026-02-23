@@ -15,7 +15,7 @@ interface FieldLock {
     can_write: boolean;
 }
 
-// Known sensitive fields to show permission toggles for
+
 const SENSITIVE_FIELDS = [
     { column: 'salary', label: 'Salary / Budget' },
     { column: 'budget', label: 'Deal Budget' },
@@ -35,7 +35,7 @@ const StaffManagement: React.FC = () => {
         api.get('/iam/users')
             .then((res) => setStaff(res.data.users || []))
             .catch(() => {
-                // Fallback demo staff list
+                
                 setStaff([
                     { id: 'u-1', email: 'admin@company.com', role_name: 'Admin', role_id: 'role-admin' },
                     { id: 'u-2', email: 'agent@company.com', role_name: 'Agent', role_id: 'role-agent' },
@@ -52,7 +52,7 @@ const StaffManagement: React.FC = () => {
             const res = await api.get(`/iam/field-locks?role_id=${member.role_id}&table_name=leads`);
             setFieldLocks(res.data.locks || []);
         } catch {
-            // Bootstrap with default open permissions
+            
             setFieldLocks(SENSITIVE_FIELDS.map((f) => ({ column_name: f.column, can_read: true, can_write: true })));
         } finally {
             setLockLoading(false);
@@ -149,7 +149,7 @@ const StaffManagement: React.FC = () => {
                 </div>
             )}
 
-            {/* Field Lock Permissions Modal */}
+            {}
             {selectedMember && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4">

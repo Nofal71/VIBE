@@ -10,7 +10,7 @@ export const Layout: React.FC = () => {
 
     return (
         <PlanLimitProvider>
-            {/* Global Upgrade Modal — overlays entire CRM */}
+            {}
             <UpgradeModal />
 
             <div className={`flex h-screen bg-gray-100 overflow-hidden font-sans ${scaleClass}`}>

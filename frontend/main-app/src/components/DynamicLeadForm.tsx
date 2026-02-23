@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 export interface SchemaColumn {
     name: string;
     type: 'STRING' | 'ENUM' | 'TEXT' | 'NUMBER' | 'BOOLEAN';
-    options?: string[]; // For enums
+    options?: string[]; 
     required?: boolean;
 }
 

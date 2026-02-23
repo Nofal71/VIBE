@@ -47,14 +47,14 @@ const LeadToolbar: React.FC<LeadToolbarProps> = ({ onImportSuccess }) => {
             console.error('Import failed:', error);
             alert('Import failed. Ensure the CSV has headers: first_name, last_name, email, status_id');
         } finally {
-            // Reset file input so the same file can be re-uploaded if needed
+            
             if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
 
     return (
         <div className="flex items-center space-x-3">
-            {/* Hidden file input for CSV selection */}
+            {}
             <input
                 type="file"
                 accept=".csv"

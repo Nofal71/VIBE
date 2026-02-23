@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 interface DomainRecord {
     id: string;
@@ -34,7 +34,7 @@ interface CompanyRecord {
 
 import api from '../../api/axiosConfig';
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 
 const formatDate = (iso: string): string =>
     new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -45,7 +45,7 @@ const getPrimaryDomain = (domains: DomainRecord[]): string => {
     return (verified ?? domains[0]).domain_name;
 };
 
-// ─── Status Badge ─────────────────────────────────────────────────────────────
+
 
 const StatusBadge: React.FC<{ status: 'active' | 'suspended' }> = ({ status }) => (
     <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full
@@ -57,7 +57,7 @@ const StatusBadge: React.FC<{ status: 'active' | 'suspended' }> = ({ status }) =
     </span>
 );
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const CompanyDirectory: React.FC = () => {
     const navigate = useNavigate();
@@ -82,7 +82,7 @@ const CompanyDirectory: React.FC = () => {
         load();
     }, []);
 
-    // Client-side filtering
+    
     const filtered = companies.filter((c) => {
         const matchSearch = !search ||
             c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -97,13 +97,13 @@ const CompanyDirectory: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
+            {}
             <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
                     <h1 className="text-3xl font-extrabold text-white tracking-tight">Company Directory</h1>
                     <p className="text-gray-500 text-sm mt-1">All provisioned tenants on the master database.</p>
                 </div>
-                {/* KPI pills */}
+                {}
                 <div className="flex gap-3">
                     <div className="bg-gray-900 border border-gray-800 rounded-xl px-4 py-2.5 text-center min-w-[80px]">
                         <p className="text-2xl font-extrabold text-white">{companies.length}</p>
@@ -120,7 +120,7 @@ const CompanyDirectory: React.FC = () => {
                 </div>
             </div>
 
-            {/* Filters */}
+            {}
             <div className="flex items-center gap-3 flex-wrap">
                 <div className="relative flex-1 min-w-[200px]">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">🔍</span>
@@ -148,23 +148,23 @@ const CompanyDirectory: React.FC = () => {
                 </div>
             </div>
 
-            {/* Error */}
+            {}
             {error && (
                 <div className="bg-amber-900/30 border border-amber-800 text-amber-300 text-xs font-semibold rounded-xl px-4 py-3">
                     ⚠ Using demo data — {error}
                 </div>
             )}
 
-            {/* Table */}
+            {}
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
-                {/* Table header */}
+                {}
                 <div className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_100px] gap-4 px-6 py-3 border-b border-gray-800 bg-gray-800/40">
                     {['Company', 'Domain', 'Plan', 'Industry / Blueprint', 'Status', ''].map((h) => (
                         <span key={h} className="text-[10px] font-extrabold text-gray-500 uppercase tracking-widest">{h}</span>
                     ))}
                 </div>
 
-                {/* Rows */}
+                {}
                 {loading ? (
                     [...Array(5)].map((_, i) => (
                         <div key={i} className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_100px] gap-4 px-6 py-4 border-b border-gray-800/50 animate-pulse">
@@ -184,13 +184,13 @@ const CompanyDirectory: React.FC = () => {
                             className={`grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_100px] gap-4 items-center px-6 py-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition group
                 ${i === filtered.length - 1 ? 'border-b-0' : ''}`}
                         >
-                            {/* Company Name + DB */}
+                            {}
                             <div className="min-w-0">
                                 <p className="font-extrabold text-white text-sm truncate">{company.name}</p>
                                 <p className="text-[11px] text-gray-600 font-mono truncate mt-0.5">{company.db_name}</p>
                             </div>
 
-                            {/* Domain */}
+                            {}
                             <div className="min-w-0">
                                 <p className="text-xs text-gray-300 truncate">{getPrimaryDomain(company.domains)}</p>
                                 {company.domains?.some((d) => d.is_verified) && (
@@ -198,24 +198,24 @@ const CompanyDirectory: React.FC = () => {
                                 )}
                             </div>
 
-                            {/* Plan */}
+                            {}
                             <div>
                                 <span className="text-xs font-bold text-indigo-300 bg-indigo-900/40 border border-indigo-800/50 px-2 py-0.5 rounded-full">
                                     {company.plan?.name ?? '—'}
                                 </span>
                             </div>
 
-                            {/* Blueprint */}
+                            {}
                             <div>
                                 <p className="text-xs text-gray-400 truncate">{company.department?.name ?? '—'}</p>
                             </div>
 
-                            {/* Status */}
+                            {}
                             <div>
                                 <StatusBadge status={company.status} />
                             </div>
 
-                            {/* Action */}
+                            {}
                             <div>
                                 <button
                                     onClick={() => navigate(`/super-admin/companies/${company.id}`)}

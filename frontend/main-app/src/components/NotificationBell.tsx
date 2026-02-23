@@ -18,17 +18,17 @@ const NotificationBell: React.FC = () => {
             const res = await api.get('/notifications/unread');
             setNotifications(res.data.notifications || []);
         } catch (err) {
-            // Silent fail — bell shows 0 if service is unreachable
+            
         }
     };
 
     useEffect(() => {
         fetchUnread();
-        const interval = setInterval(fetchUnread, 30_000); // Poll every 30 seconds
+        const interval = setInterval(fetchUnread, 30_000); 
         return () => clearInterval(interval);
     }, []);
 
-    // Close dropdown when clicking outside
+    
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -61,7 +61,7 @@ const NotificationBell: React.FC = () => {
 
     return (
         <div className="relative" ref={dropdownRef}>
-            {/* Bell Button */}
+            {}
             <button
                 onClick={() => setOpen((prev) => !prev)}
                 className="relative p-2 rounded-full hover:bg-gray-100 transition focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -78,10 +78,10 @@ const NotificationBell: React.FC = () => {
                 )}
             </button>
 
-            {/* Dropdown Panel */}
+            {}
             {open && (
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden">
-                    {/* Header */}
+                    {}
                     <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
                         <h3 className="font-extrabold text-gray-900 text-sm">Notifications</h3>
                         {unreadCount > 0 && (
@@ -94,7 +94,7 @@ const NotificationBell: React.FC = () => {
                         )}
                     </div>
 
-                    {/* Notification List */}
+                    {}
                     <div className="max-h-80 overflow-y-auto divide-y divide-gray-50">
                         {notifications.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-10 text-gray-400">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
-// ─── Navigation items ─────────────────────────────────────────────────────────
+
 
 interface NavItem {
     to: string;
@@ -16,7 +16,7 @@ const NAV_ITEMS: NavItem[] = [
     { to: '/super-admin/broadcasts', icon: '📣', label: 'System Broadcasts' },
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const SuperAdminLayout: React.FC = () => {
     const navigate = useNavigate();
@@ -24,10 +24,10 @@ const SuperAdminLayout: React.FC = () => {
     return (
         <div className="min-h-screen bg-slate-950 text-slate-100 flex overflow-hidden">
 
-            {/* ── Sidebar ── */}
+            {}
             <aside className="w-64 flex-shrink-0 flex flex-col bg-slate-900 border-r border-slate-800">
 
-                {/* Brand */}
+                {}
                 <div className="px-5 py-6 border-b border-white/5">
                     <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-lg shadow-lg">
@@ -40,7 +40,7 @@ const SuperAdminLayout: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Nav */}
+                {}
                 <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
                     <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-2 mb-2">Navigation</p>
                     {NAV_ITEMS.map((item) => (
@@ -69,7 +69,7 @@ const SuperAdminLayout: React.FC = () => {
                     ))}
                 </nav>
 
-                {/* Footer */}
+                {}
                 <div className="px-4 py-4 border-t border-white/5 space-y-2">
                     <button
                         onClick={() => navigate('/')}
@@ -85,9 +85,9 @@ const SuperAdminLayout: React.FC = () => {
                 </div>
             </aside>
 
-            {/* ── Main Content ── */}
+            {}
             <main className="flex-1 overflow-y-auto bg-slate-950">
-                {/* Top bar */}
+                {}
                 <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-3.5 bg-gray-950/90 backdrop-blur border-b border-white/5">
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                         <span className="font-bold text-gray-400">Super Admin</span>
@@ -101,7 +101,7 @@ const SuperAdminLayout: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Outlet (pages render here) */}
+                {}
                 <div className="p-8">
                     <Outlet />
                 </div>

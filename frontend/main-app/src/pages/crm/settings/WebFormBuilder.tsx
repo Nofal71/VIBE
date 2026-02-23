@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../../api/axiosConfig';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+
 
 interface TenantField {
     field_name: string;
@@ -14,7 +14,7 @@ interface TenantField {
 
 type SnippetFormat = 'iframe' | 'html';
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 
 const GATEWAY = 'https://api.ihsolution.tech/core';
 
@@ -30,7 +30,7 @@ const inputTypeFor = (fieldType: string): string => {
     }
 };
 
-// ─── Snippet Generators ───────────────────────────────────────────────────────
+
 
 const generateIframeSnippet = (tenantId: string): string =>
     `<iframe
@@ -98,7 +98,7 @@ const generateHtmlSnippet = (tenantId: string, fields: TenantField[]): string =>
 </script>`;
 };
 
-// ─── Live Preview Component ───────────────────────────────────────────────────
+
 
 const LivePreview: React.FC<{ fields: TenantField[]; tenantId: string }> = ({ fields, tenantId }) => {
     const [submitted, setSubmitted] = useState(false);
@@ -113,7 +113,7 @@ const LivePreview: React.FC<{ fields: TenantField[]; tenantId: string }> = ({ fi
 
     return (
         <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-7 max-w-md">
-            {/* Form header */}
+            {}
             <div className="mb-5">
                 <div className="w-8 h-1.5 rounded bg-indigo-500 mb-2" />
                 <h3 className="font-extrabold text-gray-800 text-lg">Get in Touch</h3>
@@ -155,7 +155,7 @@ const LivePreview: React.FC<{ fields: TenantField[]; tenantId: string }> = ({ fi
     );
 };
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+
 
 const WebFormBuilder: React.FC = () => {
     const [fields, setFields] = useState<TenantField[]>([]);
@@ -165,7 +165,7 @@ const WebFormBuilder: React.FC = () => {
     const [snippetFormat, setSnippetFormat] = useState<SnippetFormat>('html');
     const [error, setError] = useState('');
 
-    // Derive tenantId from localStorage (set by auth flow)
+    
     const tenantId = localStorage.getItem('x-tenant-id') ?? 'TENANT_ID';
 
     const loadFields = useCallback(async () => {
@@ -174,7 +174,7 @@ const WebFormBuilder: React.FC = () => {
             const res = await api.get('/tenant/settings/fields');
             const rawFields: TenantField[] = res.data?.fields ?? [];
 
-            // Add default visibility if missing
+            
             setFields(rawFields.map((f) => ({
                 ...f,
                 web_form_visible: f.web_form_visible ?? 1,
@@ -195,11 +195,11 @@ const WebFormBuilder: React.FC = () => {
 
     useEffect(() => { loadFields(); }, [loadFields]);
 
-    // Toggle field visibility
+    
     const toggleVisibility = async (fieldName: string, currentVisible: number) => {
         const newVisible = currentVisible === 1 ? 0 : 1;
         setToggling(fieldName);
-        // Optimistic update
+        
         setFields((prev) =>
             prev.map((f) => f.field_name === fieldName ? { ...f, web_form_visible: newVisible } : f)
         );
@@ -209,7 +209,7 @@ const WebFormBuilder: React.FC = () => {
                 visible: newVisible === 1,
             });
         } catch {
-            // Revert on failure
+            
             setFields((prev) =>
                 prev.map((f) => f.field_name === fieldName ? { ...f, web_form_visible: currentVisible } : f)
             );
@@ -218,7 +218,7 @@ const WebFormBuilder: React.FC = () => {
         }
     };
 
-    // Snippet
+    
     const snippet = snippetFormat === 'iframe'
         ? generateIframeSnippet(tenantId)
         : generateHtmlSnippet(tenantId, fields);
@@ -229,19 +229,19 @@ const WebFormBuilder: React.FC = () => {
             setCopied(true);
             setTimeout(() => setCopied(false), 2500);
         } catch {
-            // fallback: select textarea
+            
         }
     };
 
     const visibleCount = fields.filter((f) => f.web_form_visible !== 0).length;
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  RENDER
-    // ─────────────────────────────────────────────────────────────────────────
+    
+    
+    
 
     return (
         <div className="min-h-screen bg-gray-950 text-gray-100 pb-20">
-            {/* ── Page Header ── */}
+            {}
             <div className="bg-gradient-to-r from-indigo-900/60 via-blue-900/40 to-gray-950 border-b border-white/10 px-8 py-9">
                 <div className="max-w-7xl mx-auto flex items-start gap-5">
                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-2xl shadow-xl flex-shrink-0">
@@ -258,7 +258,7 @@ const WebFormBuilder: React.FC = () => {
 
             <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 xl:grid-cols-[1fr_460px] gap-8 items-start">
 
-                {/* LEFT — Field Selector + Code Generator */}
+                {}
                 <div className="space-y-6">
 
                     {error && (
@@ -267,7 +267,7 @@ const WebFormBuilder: React.FC = () => {
                         </div>
                     )}
 
-                    {/* ── Field Visibility Panel ── */}
+                    {}
                     <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800 bg-gray-800/40">
                             <div>
@@ -298,7 +298,7 @@ const WebFormBuilder: React.FC = () => {
                                     return (
                                         <div key={field.field_name}
                                             className="flex items-center gap-4 px-5 py-3.5 hover:bg-gray-800/30 transition group">
-                                            {/* Toggle */}
+                                            {}
                                             <button
                                                 type="button"
                                                 onClick={() => !isCore && toggleVisibility(field.field_name, field.web_form_visible ?? 1)}
@@ -313,7 +313,7 @@ const WebFormBuilder: React.FC = () => {
                           ${isVisible ? 'translate-x-5' : 'translate-x-0.5'}`} />
                                             </button>
 
-                                            {/* Field info */}
+                                            {}
                                             <div className="flex-1 min-w-0">
                                                 <p className={`text-sm font-bold truncate ${isVisible ? 'text-white' : 'text-gray-500'}`}>
                                                     {toLabel(field.field_name)}
@@ -323,7 +323,7 @@ const WebFormBuilder: React.FC = () => {
                                                 <p className="text-[11px] text-gray-600">{field.section_name} · {field.field_type}</p>
                                             </div>
 
-                                            {/* Status chip */}
+                                            {}
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border flex-shrink-0
                         ${isVisible
                                                     ? 'text-emerald-400 bg-emerald-900/30 border-emerald-800/50'
@@ -337,14 +337,14 @@ const WebFormBuilder: React.FC = () => {
                         )}
                     </div>
 
-                    {/* ── Code Snippet Generator ── */}
+                    {}
                     <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800 bg-gray-800/40">
                             <div>
                                 <h2 className="font-extrabold text-white">Embed Code</h2>
                                 <p className="text-xs text-gray-500 mt-0.5">Copy and paste into any HTML page.</p>
                             </div>
-                            {/* Format toggle */}
+                            {}
                             <div className="flex rounded-xl overflow-hidden border border-gray-700">
                                 {(['html', 'iframe'] as SnippetFormat[]).map((fmt) => (
                                     <button
@@ -359,7 +359,7 @@ const WebFormBuilder: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Endpoint display */}
+                        {}
                         <div className="px-5 py-3 bg-gray-800/20 border-b border-gray-800">
                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Submission Endpoint</p>
                             <code className="text-xs text-emerald-400 font-mono break-all">
@@ -367,7 +367,7 @@ const WebFormBuilder: React.FC = () => {
                             </code>
                         </div>
 
-                        {/* Snippet */}
+                        {}
                         <div className="relative">
                             <textarea
                                 readOnly
@@ -389,7 +389,7 @@ const WebFormBuilder: React.FC = () => {
                     </div>
                 </div>
 
-                {/* RIGHT — Live Preview */}
+                {}
                 <div className="xl:sticky xl:top-24 space-y-4">
                     <div className="flex items-center gap-2 mb-1">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -414,7 +414,7 @@ const WebFormBuilder: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Usage stats */}
+                    {}
                     <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4 space-y-2.5">
                         <p className="text-[10px] font-extrabold text-gray-600 uppercase tracking-widest">Form Summary</p>
                         <div className="flex items-center justify-between text-xs">

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import api from '../api/axiosConfig';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
 
 interface FieldLock {
     column_name: string;
@@ -25,19 +25,19 @@ interface PermissionContextValue {
     isLoading: boolean;
 }
 
-// ─── Context ─────────────────────────────────────────────────────────────────
+
 
 const PermissionContext = createContext<PermissionContextValue>({
     fieldLocks: [],
     featurePermissions: [],
-    canAccessFeature: () => true,   // Default: open (deny-on-explicit-lock philosophy)
+    canAccessFeature: () => true,   
     canReadField: () => true,
     canWriteField: () => true,
     roleId: null,
     isLoading: true,
 });
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
+
 
 export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [fieldLocks, setFieldLocks] = useState<FieldLock[]>([]);
@@ -48,18 +48,18 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     useEffect(() => {
         const loadPermissions = async () => {
             try {
-                // 1. Resolve the current user's role from session/token
+                
                 const profileRes = await api.get('/iam/me').catch(() => null);
                 const currentRoleId: string | null = profileRes?.data?.role_id ?? null;
                 setRoleId(currentRoleId);
 
                 if (!currentRoleId) {
-                    // No role resolved — treat as fully open (Super Admin pattern)
+                    
                     setIsLoading(false);
                     return;
                 }
 
-                // 2. Load field locks and feature permissions in parallel
+                
                 const [locksRes, featuresRes] = await Promise.allSettled([
                     api.get(`/iam/field-locks?role_id=${currentRoleId}&table_name=leads`),
                     api.get(`/iam/feature-permissions?role_id=${currentRoleId}`),
@@ -82,14 +82,11 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         loadPermissions();
     }, []);
 
-    /**
-     * Returns true if the role is explicitly allowed OR if no rule exists yet
-     * (deny-only model: absence of a record = allowed).
-     */
+    
     const canAccessFeature = useCallback(
         (featureName: string): boolean => {
             const rule = featurePermissions.find((p) => p.feature_name === featureName);
-            if (!rule) return true; // No explicit restriction → allowed
+            if (!rule) return true; 
             return rule.is_allowed;
         },
         [featurePermissions]
@@ -134,7 +131,7 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     );
 };
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
+
 
 export const usePermissions = (): PermissionContextValue => {
     return useContext(PermissionContext);

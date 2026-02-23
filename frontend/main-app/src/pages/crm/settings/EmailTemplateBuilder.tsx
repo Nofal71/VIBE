@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../api/axiosConfig';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
 
 interface EmailTemplate {
     id: string;
@@ -11,7 +11,7 @@ interface EmailTemplate {
     variables: string[];
 }
 
-// ─── Available variables to show in the helper panel ─────────────────────────
+
 const COMMON_VARIABLES = [
     { key: 'first_name', label: 'First Name' },
     { key: 'last_name', label: 'Last Name' },
@@ -29,7 +29,7 @@ const EMPTY_FORM = {
     body_html: '',
 };
 
-// ─── Component ────────────────────────────────────────────────────────────────
+
 
 const EmailTemplateBuilder: React.FC = () => {
     const [templates, setTemplates] = useState<EmailTemplate[]>([]);
@@ -39,7 +39,7 @@ const EmailTemplateBuilder: React.FC = () => {
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    // ─── Load ─────────────────────────────────────────────────────────────────
+    
 
     useEffect(() => {
         loadTemplates();
@@ -57,7 +57,7 @@ const EmailTemplateBuilder: React.FC = () => {
         }
     };
 
-    // ─── Inject Variable into textarea ────────────────────────────────────────
+    
 
     const injectVariable = (varKey: string) => {
         const tag = `{{${varKey}}}`;
@@ -69,7 +69,7 @@ const EmailTemplateBuilder: React.FC = () => {
         setForm((prev) => ({ ...prev, subject: prev.subject + tag }));
     };
 
-    // ─── Save ──────────────────────────────────────────────────────────────────
+    
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -110,11 +110,11 @@ const EmailTemplateBuilder: React.FC = () => {
         setSuccess(false);
     };
 
-    // ─── Render ───────────────────────────────────────────────────────────────
+    
 
     return (
         <div className="space-y-8">
-            {/* Header */}
+            {}
             <div>
                 <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Email Template Builder</h1>
                 <p className="text-sm text-gray-500 mt-1">Create reusable email templates with dynamic variable injection.</p>
@@ -122,7 +122,7 @@ const EmailTemplateBuilder: React.FC = () => {
 
             <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
 
-                {/* ── Form ── */}
+                {}
                 <div className="xl:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                         <h2 className="font-extrabold text-gray-800">
@@ -206,7 +206,7 @@ const EmailTemplateBuilder: React.FC = () => {
                     </form>
                 </div>
 
-                {/* ── Variable Reference Panel ── */}
+                {}
                 <div className="xl:col-span-2 space-y-4">
                     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                         <div className="px-5 py-4 border-b border-gray-100">
@@ -229,7 +229,7 @@ const EmailTemplateBuilder: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Preview of detected variables */}
+                    {}
                     {form.body_html && (
                         <div className="bg-indigo-50 border border-indigo-200 rounded-2xl p-4">
                             <p className="text-xs font-bold text-indigo-700 uppercase tracking-wider mb-2">Detected Variables</p>
@@ -246,7 +246,7 @@ const EmailTemplateBuilder: React.FC = () => {
                 </div>
             </div>
 
-            {/* ── Existing Templates ── */}
+            {}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-100">
                     <h2 className="font-extrabold text-gray-800">Saved Templates</h2>

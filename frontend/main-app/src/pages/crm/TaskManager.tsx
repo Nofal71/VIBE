@@ -107,7 +107,7 @@ const TaskManager: React.FC = () => {
                 </form>
             )}
 
-            {/* Kanban Board */}
+            {}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {COLUMNS.map((col) => (
                     <div key={col.id} className={`rounded-2xl border-2 ${col.color} p-4 min-h-[300px]`}>
@@ -130,7 +130,7 @@ const TaskManager: React.FC = () => {
                                             <span className="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full font-semibold">Lead</span>
                                         )}
                                     </div>
-                                    {/* Quick status move buttons */}
+                                    {}
                                     <div className="mt-3 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         {COLUMNS.filter((c) => c.id !== col.id).map((c) => (
                                             <button

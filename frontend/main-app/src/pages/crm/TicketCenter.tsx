@@ -16,7 +16,7 @@ const TicketCenter: React.FC = () => {
     const [formData, setFormData] = useState({ title: '', description: '', priority: 'LOW', lead_id: 'SYSTEM_LEAD_01' });
 
     useEffect(() => {
-        // Ticket service routing maps explicitly toward Port 4003 under Gateway limits
+        
         api.get('/tickets')
             .then(res => setTickets(res.data.tickets || []))
             .catch(err => {
@@ -37,7 +37,7 @@ const TicketCenter: React.FC = () => {
             setFormData({ title: '', description: '', priority: 'LOW', lead_id: 'SYSTEM_LEAD_01' });
         } catch (err) {
             console.error('Failed writing ticket payload', err);
-            // Optimistic appending
+            
             setTickets([...tickets, { id: String(Date.now()), ...formData, status: 'OPEN' } as Ticket]);
             setShowForm(false);
         }
@@ -82,7 +82,7 @@ const TicketCenter: React.FC = () => {
             )}
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Simple Masonry / List bounds */}
+                {}
                 {tickets.map(t => (
                     <div key={t.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition cursor-default relative overflow-hidden">
                         <div className={`absolute top-0 right-0 w-2 h-full ${t.priority === 'HIGH' ? 'bg-red-500' : t.priority === 'MEDIUM' ? 'bg-yellow-500' : 'bg-green-500'}`}></div>
